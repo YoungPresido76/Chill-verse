@@ -21,6 +21,7 @@
       Chill Verse
     </h1>
 
+    <!-- Login -->
     <div id="login" class="space-y-6">
       <input type="email" id="email" placeholder="Email" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
       <input type="password" id="pass" placeholder="Password" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
@@ -28,8 +29,9 @@
       <p class="text-center">No account? <span onclick="toggleForm()" class="text-cyan-400 cursor-pointer underline">Register</span></p>
     </div>
 
+    <!-- Register -->
     <div id="register" class="hidden space-y-6">
-      <input type="text" id="username" placeholder="Username (your character name)" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
+      <input type="text" id="username" placeholder="Username (character name)" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
       <input type="email" id="reg-email" placeholder="Email" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
       <input type="password" id="reg-pass" placeholder="Password" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
       <button onclick="register()" class="w-full py-4 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl font-bold text-xl glow btn transition">Create Account</button>
@@ -40,18 +42,15 @@
   </div>
 
 <script>
-// ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
-// ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
-// REPLACE THIS WITH YOUR REAL CONFIG FROM FIREBASE
+// YOUR REAL CONFIG (already inserted!)
 const firebaseConfig = {
-  apiKey: "AIzaSyDtb_uf4-hUPQmZtywyYi_ZiUNLVNjgAAtU",
-  authDomain: "chill-verse.firebaseapp.com",
-  projectId: "chill-verse",
-  storageBucket: "chill-verse.appspot.com",
-  messagingSenderId: "177963602316",
-  appId: "1:177963602316:web:ae099ffd0a0a5294be86a9"
+  apiKey: "AIzaSyC9pXU2ZhqUTvQkwgaPOacFeVZcU7grqGQ",
+  authDomain: "multiverse--chill.firebaseapp.com",
+  projectId: "multiverse--chill",
+  storageBucket: "multiverse--chill.firebasestorage.app",
+  messagingSenderId: "1098599346366",
+  appId: "1:1098599346366:web:cbf32c2991abcec78eeeef"
 };
-// ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -81,7 +80,7 @@ function login() {
   auth.signInWithEmailAndPassword(email, password)
     .then(res => {
       if (res.user.emailVerified) {
-        document.getElementById('msg').innerHTML = `Welcome <strong>${res.user.displayName || email}</strong>!<br>Character creation loading…`;
+        document.getElementById('msg').innerHTML = `Welcome <strong>${res.user.displayName || email}</strong>!<br>Character creation next...`;
       } else {
         document.getElementById('msg').textContent = "Please verify your email first!";
       }
