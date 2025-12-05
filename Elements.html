@@ -1,33 +1,750 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Chrome hearts</title>
-<style type="text/css">h1, h2 { color: orange;}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elements - CHill VERSE</title>
+    <link href="https://fonts.googleapis.com/css2? family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0d0d1f 100%);
+            color: #e0e0ff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 14, 39, 0.95);
+            border-bottom: 2px solid #00ffff;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1. 5rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: #00ffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            padding: 4px;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.25);
+        }
+
+        . search-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #00ffff;
+            transition: all 0.3s ease;
+        }
+
+        .search-icon:hover {
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(15, 15, 35, 0.98);
+            border-right: 2px solid #00ffff;
+            padding: 2rem 0;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+
+        nav. active {
+            transform: translateX(0);
+        }
+
+        .nav-close {
+            background: none;
+            border: none;
+            color: #00ffff;
+            font-size: 2rem;
+            cursor: pointer;
+            margin: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-close:hover {
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
+            transform: scale(1.2);
+        }
+
+        nav ul {
+            list-style: none;
+            margin-bottom: 80px;
+        }
+
+        nav ul li {
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        nav ul li > a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1. 2rem 1.5rem;
+            color: #e0e0ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        nav ul li > a:hover {
+            color: #00ffff;
+            padding-left: 2rem;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+            background: rgba(0, 255, 255, 0.03);
+        }
+
+        nav ul li > a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: #00ffff;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        nav ul li > a:hover::before {
+            transform: scaleY(1);
+        }
+
+        /* Collapsible menu arrow */
+        .collapse-arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .collapse-arrow. open {
+            transform: rotate(180deg);
+        }
+
+        /* Submenu */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 255, 255, 0.01);
+        }
+
+        .submenu.active {
+            max-height: 500px;
+        }
+
+        .submenu li {
+            border: none;
+        }
+
+        . submenu li a {
+            display: block;
+            padding: 0.8rem 2. 5rem;
+            color: #b0b0ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: capitalize;
+            transition: all 0.3s ease;
+            border-left: 2px solid transparent;
+        }
+
+        .submenu li a:hover {
+            color: #00ffff;
+            border-left-color: #00ffff;
+            padding-left: 3rem;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Footer in Sidebar */
+        . nav-footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            border-top: 2px solid rgba(0, 255, 255, 0.2);
+            padding: 1. 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+            font-size: 1.5rem;
+            color: #0a0e27;
+        }
+
+        .profile-icon:hover {
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+            transform: scale(1. 1);
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        . page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 255, 255, 0.03);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #00ffff;
+        }
+
+        .elements-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .element-block {
+            background: rgba(0, 255, 255, 0.03);
+            border: 2px solid rgba(0, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .element-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+        }
+
+        .element-block:hover {
+            background: rgba(0, 255, 255, 0.06);
+            border-color: rgba(0, 255, 255, 0. 3);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Element-specific colors */
+        .cryo-block {
+            border-color: rgba(100, 200, 255, 0.3);
+        }
+
+        .cryo-block:hover {
+            box-shadow: 0 0 15px rgba(100, 200, 255, 0.25);
+        }
+
+        .cryo-block h2 {
+            color: #64c8ff;
+        }
+
+        . pryo-block {
+            border-color: rgba(255, 120, 80, 0.3);
+        }
+
+        .pryo-block:hover {
+            box-shadow: 0 0 15px rgba(255, 120, 80, 0.25);
+        }
+
+        .pryo-block h2 {
+            color: #ff7850;
+        }
+
+        .animo-block {
+            border-color: rgba(100, 255, 150, 0.3);
+        }
+
+        .animo-block:hover {
+            box-shadow: 0 0 15px rgba(100, 255, 150, 0.25);
+        }
+
+        .animo-block h2 {
+            color: #64ff96;
+        }
+
+        .geo-block {
+            border-color: rgba(200, 180, 100, 0.3);
+        }
+
+        .geo-block:hover {
+            box-shadow: 0 0 15px rgba(200, 180, 100, 0.25);
+        }
+
+        .geo-block h2 {
+            color: #c8b464;
+        }
+
+        .electro-block {
+            border-color: rgba(255, 220, 100, 0.3);
+        }
+
+        .electro-block:hover {
+            box-shadow: 0 0 15px rgba(255, 220, 100, 0.25);
+        }
+
+        .electro-block h2 {
+            color: #ffdc64;
+        }
+
+        .element-block h2 {
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1. 5rem;
+        }
+
+        .element-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .element-info h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #00ffff;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .element-info p {
+            color: #c0c0ff;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        . damage-text {
+            color: #ff8080;
+        }
+
+        .strength-text {
+            color: #80ff80;
+        }
+
+        . weakness-text {
+            color: #ffaa80;
+        }
+
+        . power-text {
+            color: #80d0ff;
+        }
+
+        . power-terms {
+            background: rgba(0, 255, 255, 0.08);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+
+        .power-terms p {
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 1.3rem;
+            }
+
+            . logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .elements-container {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            nav {
+                width: 250px;
+            }
+
+            . nav-footer {
+                flex-direction: column;
+            }
+
+            .element-block {
+                padding: 1.5rem;
+            }
+
+            .element-block h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<div>
-<hgroup>
-<h1 id="pageTitle">Chrome hearts</h1>
-<h2>Welcome to Chrome Hearts</h2>
-<p>(A place for singles to mingle)</p>
-</hgroup>
-</div>
-<h2>Login Page</h2>
-<p>Enter your login info</p>
-<form>
-<label for="username">Username:<input type="text" id="username" name="username"></label>
-<label for="password">Password:<input type="password" id="password" name="password"></label>
-<button type="submit"><a href="https://sites.google.com/u/0/d/1mEBC7IrXA4zWS0xjgo1VvsvBGypwGXq8/p/1f8le4j4U6IZCjB1lxB1oswqgMIzjLOip/preview" >Log in</a></button>
-</form>
-<p>Don’t have an account<a href="http://www.chromhearts.websites.co.in/sign" >/sign up</a></p>
-<p>Forget Password<a href="http://www.chromhearts.websites.co.in/recov" >/recover</a></p>
-<footer><h3>&copy; Chrome Hearts,2021</h3>
-<nav>
-<ul>
-<li><a href="#about">About</a></li>
-<li><a href="#contact">Contact</a></li>
-</ul>
-</nav>
-</footer>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <div class="logo">
+                <img src="icon.png" alt="CHill VERSE Icon">
+            </div>
+            <h1 class="header-title">CHill VERSE</h1>
+        </div>
+        <div class="search-icon">🔍</div>
+    </header>
+
+    <!-- Navigation -->
+    <nav id="sidebar">
+        <button class="nav-close" id="navClose">✕</button>
+        <ul>
+            <li><a href="../home.html">Main</a></li>
+            <li>
+                <a class="collapsible-menu" id="elementsToggle">
+                    Elements
+                    <span class="collapse-arrow">▼</span>
+                </a>
+                <ul class="submenu" id="elementsSubmenu">
+                    <li><a href="Elements. html">View All Elements</a></li>
+                </ul>
+            </li>
+            <li><a href="arena.html">Arena</a></li>
+        </ul>
+        <div class="nav-footer">
+            <div class="profile-icon" title="Profile">👤</div>
+        </div>
+    </nav>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <main>
+        <section class="page-header">
+            <h1>Elements & Effects</h1>
+            <p>Master the five sacred elements and their unique abilities</p>
+        </section>
+
+        <section class="elements-container">
+            <!-- CRYO Element -->
+            <div class="element-block cryo-block">
+                <h2>❄️ CRYO</h2>
+                
+                <div class="element-info">
+                    <h3>Theme</h3>
+                    <p>Cold, freezing, frost magic. </p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="damage-text">Damage</h3>
+                    <p>Varies according to character level.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="strength-text">Defensive Capabilities</h3>
+                    <p>Crowd control, slowing, and freezing effects.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="weakness-text">Weakness</h3>
+                    <p>Characters possessing pyro abilities. </p>
+                </div>
+
+                <div class="power-terms">
+                    <h3 class="power-text">Power Terms</h3>
+                    <p>Freeze • Cooldown • Area of Effect (AOE)</p>
+                </div>
+            </div>
+
+            <!-- PRYO Element -->
+            <div class="element-block pryo-block">
+                <h2>🔥 PRYO</h2>
+                
+                <div class="element-info">
+                    <h3>Theme</h3>
+                    <p>Fire, heat, explosions, destruction.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="damage-text">Damage</h3>
+                    <p>Varies according to character level.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="strength-text">Characteristics</h3>
+                    <p>Offensive power, aggression, and speed.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="weakness-text">Weakness</h3>
+                    <p>Characters with hydro abilities.</p>
+                </div>
+
+                <div class="power-terms">
+                    <h3 class="power-text">Power Terms</h3>
+                    <p>Ignite • Flaming Phoenix • Torrent</p>
+                </div>
+            </div>
+
+            <!-- ANIMO Element -->
+            <div class="element-block animo-block">
+                <h2>💨 ANIMO</h2>
+                
+                <div class="element-info">
+                    <h3>Theme</h3>
+                    <p>Wind, air, storms, pressure.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="damage-text">Damage</h3>
+                    <p>Varies according to character level.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="strength-text">Facilitates</h3>
+                    <p>Mobility, crowd control, and gathering of enemies.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="weakness-text">Weakness</h3>
+                    <p>Lacks significant damage capacity; considered weak.</p>
+                </div>
+
+                <div class="power-terms">
+                    <h3 class="power-text">Power Terms</h3>
+                    <p>Burst • Wind Conjure • Area of Effect (AOE)<br><em style="font-size: 0. 8rem;">Unlocks at level 20</em></p>
+                </div>
+            </div>
+
+            <!-- GEO Element -->
+            <div class="element-block geo-block">
+                <h2>⛰️ GEO</h2>
+                
+                <div class="element-info">
+                    <h3>Theme</h3>
+                    <p>Raw power, stability, crystals, defense.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="damage-text">Damage</h3>
+                    <p>Varies according to character level.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="strength-text">Focuses On</h3>
+                    <p>Shielding, construction, and strong impact elements.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="weakness-text">Weakness</h3>
+                    <p>More defensive than offensive; characterized by slowness.</p>
+                </div>
+
+                <div class="power-terms">
+                    <h3 class="power-text">Power Terms</h3>
+                    <p>Summon • Shield • Area of Effect (AOE)</p>
+                </div>
+            </div>
+
+            <!-- ELECTRO Element -->
+            <div class="element-block electro-block">
+                <h2>⚡ ELECTRO</h2>
+                
+                <div class="element-info">
+                    <h3>Theme</h3>
+                    <p>Electricity, energy, storms, speed.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="damage-text">Damage</h3>
+                    <p>Varies according to character level.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="strength-text">Features</h3>
+                    <p>Chain damage, shockwaves, and rapid hits.</p>
+                </div>
+
+                <div class="element-info">
+                    <h3 class="weakness-text">Weakness</h3>
+                    <p>Limited effectiveness against shielded enemies; consumes mana.</p>
+                </div>
+
+                <div class="power-terms">
+                    <h3 class="power-text">Power Terms</h3>
+                    <p>Blast • Charge • Explode I<br><em style="font-size: 0.8rem;">Explode II and III unlock at level 20</em></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Menu toggle functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const navClose = document.getElementById('navClose');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const elementsToggle = document.getElementById('elementsToggle');
+        const elementsSubmenu = document.getElementById('elementsSubmenu');
+        const collapseArrow = elementsToggle.querySelector('.collapse-arrow');
+
+        // Open menu
+        menuToggle.addEventListener('click', (e) => {
+            e. stopPropagation();
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+        });
+
+        // Close menu button
+        navClose.addEventListener('click', (e) => {
+            e. stopPropagation();
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Close menu on overlay click
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Collapsible Elements menu
+        elementsToggle.addEventListener('click', (e) => {
+            e. preventDefault();
+            e.stopPropagation();
+            elementsSubmenu.classList.toggle('active');
+            collapseArrow.classList.toggle('open');
+        });
+
+        // Close menu when a link is clicked (except collapsible toggle)
+        const navLinks = sidebar.querySelectorAll('a:not(. collapsible-menu)');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+
+        // Prevent sidebar from closing when clicking inside it
+        sidebar.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
 </body>
 </html>
