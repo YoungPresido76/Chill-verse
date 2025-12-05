@@ -1,27 +1,391 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Index</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chill Verse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis. com/css2?family=Comfortaa:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat. js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <style>
+    body { font-family: 'Comfortaa', cursive; background: linear-gradient(135deg, #0a0a1a, #1a0033); color: #e0e7ff; }
+    . neumorphism { background: #e0e0e0; backdrop-filter: blur(14px); border: 1px solid rgba(168,85,247,0.25); }
+    .glow { text-shadow: 0 0 20px #a855f7; }
+    .btn-big:hover { transform: translateY(-9px) scale(1.06); box-shadow: 0 12px 30px rgba(168,85,247,. 6);}
+    .element:hover { transform: scale(1. 19) translateY(-12px); filter: drop-shadow(0 0 60px currentColor);}
+    .active-gender { border: 4px solid #06b6d4; }
+    .profile-card { background: rgba(32,32,65,0.98); border-radius: 24px; border: 2px solid #22d3ee; box-shadow: 0 0 40px #0ea5e9cc; padding: 40px 32px;width:330px;}
+    .profile-label { color: #a5b4fc;}
+    .glass-footer {background: rgba(10,8,30,0.97); border-top:2px solid #6366f1; padding-top:16px;}
+  </style>
 </head>
-<body>
-<form>
-<label for="username">
-Username:
-<input type="text" id="username" name="username">
-<br>
-  <label for="password">
-Password:
-<input type="password" id="password" name="password">
-</label>
-<button type="submit">Login</button>
-<label for="selector">
-<select id="selector">
-<option>Nigeria</option>
-<option>America</option>
-</select>
-</label>
-    <a href="index.html" style="position:fixed; top:10px; right:10px; background:red; color:white; padding:10px; border-radius:5px; text-decoration:none;">Logout</a>
-</form>
+<body class="min-h-screen">
+
+<!-- ============ TOP BAR ============ -->
+<div class="fixed top-0 left-0 right-0 neumorphism border-b border-purple-500/30 z-50">
+  <div class="flex justify-between items-center p-3">
+    <!-- Sidebar Toggle -->
+    <button onclick="toggleSidebar()" class="text-2xl">☰</button>
+    
+    <!-- Currencies (Icons Only) -->
+    <div class="flex gap-4 items-center text-lg">
+      <div id="shards" title="Soul Shards">✦</div>
+      <div id="coins" title="Coins">🪙</div>
+      <div id="diamonds" title="Diamonds">💎</div>
+      <div id="universal" title="Universal" class="text-green-400">💵</div>
+    </div>
+    
+    <!-- CHILL VERSE (Smaller) -->
+    <h1 class="text-xl font-bold glow">Chill Verse</h1>
+    
+    <!-- User Element -->
+    <img id="user-element" src="" class="w-10 h-10 rounded-full border-3 border-cyan-500" title="Main Element">
+    
+    <!-- Level (Smaller) -->
+    <div class="text-xs">
+      <div id="level" class="text-xs">Lvl 1</div>
+      <div class="w-20 bg-gray-800 rounded-full h-1. 5">
+        <div id="xp-bar" class="bg-gradient-to-r from-purple-600 to-cyan-500 h-1.5 rounded-full transition-all" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SIDEBAR MENU ============ -->
+<div id="sidebar" class="fixed left-0 top-0 h-full w-1/2 max-w-xs neumorphism -translate-x-full transition-transform z-40 pt-20 flex flex-col">
+  <div class="p-6 space-y-6 text-lg flex-1">
+    <a href="../home.html" onclick="showHub()" class="block glow text-xl font-bold">Main</a>
+  </div>
+  
+  <!-- Profile Footer -->
+  <div class="border-t border-purple-500/50 p-6 flex flex-col gap-4">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="showProfile()">
+      <svg xmlns="http://www.w3. org/2000/svg" class="w-8 h-8 text-cyan-400" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      </svg>
+      <span class="text-sm">Profile</span>
+    </div>
+    <div class="text-xs space-y-1">
+      <div class="break-all">blcksquare001@gmail.com</div>
+      <div>WhatsApp: +2349130697204</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CHARACTER CREATION SCREEN ============ -->
+<div id="character-screen" class="hidden pt-24 p-8 text-center">
+  <h1 class="text-5xl glow mb-10">Create Your Character</h1>
+  <p class="text-2xl mb-7">Welcome, <span id="user-name" class="text-cyan-400"></span>!</p>
+  <div class="gap-10 flex justify-center items-center mb-5">
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="https://i.ibb.co/4pdQ8bF/male. png" class="w-24 h-24 rounded-full border-4 border-cyan-400 mb-2" id="avatar-male" onclick="chooseGender('male')">
+      <span class="text-cyan-200 text-lg">Male</span>
+    </label>
+    <label class="flex flex-col items-center cursor-pointer">
+      <img src="https://i.ibb.co/NjH70Ck/female.png" class="w-24 h-24 rounded-full border-4 border-pink-400 mb-2" id="avatar-female" onclick="chooseGender('female')">
+      <span class="text-pink-200 text-lg">Female</span>
+    </label>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-8 justify-center max-w-5xl mx-auto my-6">
+    <img src="https://i.ibb. co/7zC5n8F/geo.png"     alt="Geo"     onclick="select('Geo')"     class="w-32 h-32 element cursor-pointer">
+    <img src="https://i.ibb.co/0jZ6Y4Q/cryo.png"    alt="Cryo"    onclick="select('Cryo')"    class="w-32 h-32 element cursor-pointer">
+    <img src="https://i.ibb.co/9hR6g3K/anemo.png"   alt="Anemo"   onclick="select('Anemo')"   class="w-32 h-32 element cursor-pointer">
+    <img src="https://i.ibb.co/3hW8W5N/electro.png" alt="Electro" onclick="select('Electro')" class="w-32 h-32 element cursor-pointer">
+    <img src="https://i.ibb.co/4pJ8n7Y/pyro.png"    alt="Pyro"    onclick="select('Pyro')"    class="w-32 h-32 element cursor-pointer">
+  </div>
+  <input type="text" id="referral" placeholder="Referral (optional)" class="mt-6 px-4 py-3 rounded-xl focus:border-cyan-400 outline-none bg-white/10 border border-purple-500/50">
+  <p class="text-3xl mt-3">Chosen: <span id="chosen" class="glow text-cyan-400"></span></p>
+  <button id="enter-btn" class="mt-10 px-16 py-6 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-xl text-3xl font-bold glow opacity-50 cursor-not-allowed" disabled>Enter Chill Verse</button>
+</div>
+
+<!-- ============ PROFILE CARD ============ -->
+<div id="profile-modal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+  <div class="profile-card relative">
+    <button onclick="closeProfile()" class="absolute right-3 top-2 text-2xl text-red-400 font-bold">&times;</button>
+    <h3 class="text-3xl glow mb-2">Profile</h3>
+    <p id="profile-name" class="text-2xl my-2">Player</p>
+    <div class="mb-3"><span class="profile-label">Email:</span> <span id="profile-email"></span></div>
+    <div class="mb-3"><span class="profile-label">Gender:</span> <span id="profile-gender"></span></div>
+    <div class="mb-3"><span class="profile-label">Referral:</span> <span id="profile-referral"></span></div>
+    <button onclick="showEditEmail()" class="w-full my-2 px-3 py-1 border border-cyan-400 rounded bg-cyan-900 text-cyan-200">Edit Email</button>
+    <button onclick="deleteAccount()" class="w-full my-2 px-3 py-1 border border-red-400 rounded bg-red-900 text-red-200">Delete Account</button>
+    <div id="edit-email-div" class="hidden my-3">
+      <input type="email" id="new-email" placeholder="New email" class="w-full px-2 py-1 rounded mb-2">
+      <button onclick="editEmail()" class="px-3 py-1 bg-cyan-700 rounded text-white">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MAIN HUB PAGE ============ -->
+<div id="hub" class="hidden pt-24 min-h-screen flex flex-col items-center justify-center p-8">
+  <h2 class="text-4xl glow mb-12">Welcome to the Verse</h2>
+  
+  <!-- Vertical Block Buttons -->
+  <div class="flex flex-col gap-6 max-w-sm w-full">
+    <button onclick="showQuest()" class="btn-big neumorphism p-6 rounded-2xl text-2xl font-bold glow bg-gradient-to-br from-blue-600 to-purple-600 w-full py-8">📋 Quest Board</button>
+    <button onclick="showDungeon()" class="btn-big neumorphism p-6 rounded-2xl text-2xl font-bold glow bg-gradient-to-br from-red-600 to-orange-600 w-full py-8">⚔️ Dungeon</button>
+    <button onclick="showAdventures()" class="btn-big neumorphism p-6 rounded-2xl text-2xl font-bold glow bg-gradient-to-br from-green-600 to-teal-600 w-full py-8">🌍 Adventures</button>
+    <button onclick="showTraining()" class="btn-big neumorphism p-6 rounded-2xl text-2xl font-bold glow bg-gradient-to-br from-purple-600 to-pink-600 w-full py-8">💪 Training</button>
+  </div>
+</div>
+
+<!-- ============ QUEST PAGE ============ -->
+<div id="quest" class="hidden pt-28 px-6">
+  <h2 class="text-5xl glow mb-8">Quest Board</h2>
+  <div class="space-y-6 max-w-2xl mx-auto">
+    <div class="neumorphism p-7 rounded-xl">
+      <h3 class="text-3xl">Daily Login (completed online session)</h3>
+      <p>Reward: 20 XP, 1 Soul Shard</p>
+      <button onclick="claimDaily()" class="bg-cyan-600 text-white px-4 py-2 rounded mt-2">Claim</button>
+    </div>
+    <div class="neumorphism p-7 rounded-xl">
+      <h3 class="text-3xl">Defeat 1 Dungeon Enemy</h3>
+      <p>Reward: 60 XP, 5 Coins, 2 Soul Shards</p>
+    </div>
+  </div>
+  <button onclick="showHub()" class="mt-9 neumorphism px-10 py-4 rounded-xl glow">Back to Hub</button>
+</div>
+
+<!-- ============ DUNGEON PAGE ============ -->
+<div id="dungeon" class="hidden pt-24 min-h-screen flex flex-col items-center justify-center">
+  <h2 class="text-5xl glow mb-8">Dungeon Battle</h2>
+  <div class="neumorphism p-8 rounded-xl text-center text-2xl max-w-lg shadow-xl">
+    ⚔️ <span id="dungeon-msg">Face a formidable enemy... </span>
+  </div>
+  <button onclick="doBattle()" class="btn-big mt-8 neumorphism px-10 py-5 text-xl rounded-xl bg-gradient-to-br from-red-500 to-orange-500">Attack</button>
+  <button onclick="showHub()" class="mt-3 neumorphism px-9 py-3 rounded-xl glow">Back</button>
+</div>
+
+<!-- ============ ADVENTURES PAGE ============ -->
+<div id="adventures" class="hidden pt-24 min-h-screen flex flex-col items-center justify-center">
+  <h2 class="text-5xl glow mb-8">Adventures</h2>
+  <div class="neumorphism p-8 rounded-xl text-left max-w-lg shadow-xl text-2xl">🌌 <span id="adv-msg">You explore the unknown...</span></div>
+  <button onclick="exploreAdventure()" class="btn-big mt-8 neumorphism px-10 py-5 text-xl rounded-xl bg-gradient-to-br from-green-500 to-teal-500">Explore Again</button>
+  <button onclick="showHub()" class="mt-3 neumorphism px-9 py-3 rounded-xl glow">Back</button>
+</div>
+
+<!-- ============ TRAINING PAGE ============ -->
+<div id="training" class="hidden pt-24 min-h-screen flex flex-col items-center justify-center">
+  <h2 class="text-5xl glow mb-8">Training Grounds</h2>
+  <div class="neumorphism p-8 rounded-xl text-center text-2xl max-w-lg">🏋️ Improve your skills.  <br><span id="training-msg" class="block">+10 XP every 30s online. </span></div>
+  <button onclick="doTraining()" class="btn-big mt-8 neumorphism px-10 py-5 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500">Train Now</button>
+  <button onclick="showHub()" class="mt-3 neumorphism px-9 py-3 rounded-xl glow">Back</button>
+</div>
+
+<!-- ============ SCRIPT ============ -->
+<script>
+const firebaseConfig = { apiKey: "AIzaSyC9pXU2ZhqUTvQkwgaPOacFeVZcU7grqGQ", authDomain: "multiverse--chill.firebaseapp.com", projectId: "multiverse--chill", storageBucket: "multiverse--chill.firebasestorage.app", messagingSenderId: "1098599346366", appId: "1:1098599346366:web:cbf32c2991abcec78eeeef" };
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth(), db = firebase.firestore();
+
+let userDocRef, playerElement="", onlineStart=0, gender="male", referral="";
+
+function toggleSidebar() { document.getElementById('sidebar').classList. toggle('-translate-x-full'); }
+function chooseGender(g) {
+  gender = g;
+  document.getElementById('avatar-male').classList.toggle('active-gender', g==='male');
+  document.getElementById('avatar-female').classList.toggle('active-gender', g==='female');
+}
+
+// TRUE character creation page (choose element + gender + referral)
+auth.onAuthStateChanged(user=>{
+  if(user&&user.emailVerified){
+    userDocRef = db.collection('players').doc(user.uid);
+    userDocRef.get().then(doc=>{
+      if(doc. exists&&doc.data(). element){
+        let data=doc.data(); 
+        playerElement=data. element||""; 
+        gender=data.gender||"male"; 
+        referral=data. referral||"";
+        loadPlayerData(data); 
+        showHub();
+      }else{
+        document.getElementById('character-screen').classList.remove('hidden');
+        document.getElementById('user-name').textContent=user.displayName||user.email. split('@')[0];
+      }
+    });
+    onlineStart=Date.now();
+    setInterval(()=>{ // Passive XP for being online
+      if(document.getElementById('hub')&&! document.getElementById('hub').classList. contains('hidden')) addReward(0,0,Math.floor((Date.now()-onlineStart)/30000)*10);
+    },30000);
+  }else{
+    // Redirect to login page if not authenticated
+    location.href = '../login.html'; // Adjust path as needed
+  }
+});
+
+function select(el) {
+  playerElement=el; 
+  document.getElementById('chosen').textContent=el;
+  document.getElementById('enter-btn').classList.remove('opacity-50','cursor-not-allowed');
+  document.getElementById('enter-btn'). disabled=false;
+  document.getElementById('enter-btn').textContent=`Enter as ${el} Master`;
+  document.getElementById('enter-btn'). onclick=()=>{
+    let ref=document.getElementById('referral').value||"";
+    userDocRef.set({
+      element:el, 
+      xp:0, 
+      level:1, 
+      shards:0, 
+      coins:500, 
+      diamonds:10, 
+      universal:0, 
+      gender, 
+      referral:ref
+    }, {merge:true});
+    loadPlayerData({element:el, xp:0, level:1, shards:0, coins:500, diamonds:10, universal:0, gender, referral:ref});
+    document.getElementById('character-screen').classList.add('hidden'); 
+    showHub();
+  };
+}
+
+// ================== Player State and Currency =======================
+function loadPlayerData(data) {
+  let icons = {
+    Geo: "https://i.ibb.co/7zC5n8F/geo.png", 
+    Cryo:"https://i.ibb.co/0jZ6Y4Q/cryo.png", 
+    Anemo:"https://i.ibb.co/9hR6g3K/anemo.png", 
+    Electro:"https://i.ibb.co/3hW8W5N/electro.png", 
+    Pyro:"https://i.ibb.co/4pJ8n7Y/pyro.png"
+  };
+  document.getElementById('user-element').src=icons[data.element||"Geo"];
+  document. getElementById('shards').textContent = `✦ ${data.shards||0}`;
+  document.getElementById('coins').textContent = `🪙 ${data.coins||0}`;
+  document.getElementById('diamonds').textContent = `💎 ${data.diamonds||0}`;
+  document.getElementById('universal').textContent = `💵 ${data.universal||0}`;
+  let level = data.level||1, xp = data.xp||0;
+  document.getElementById('level').textContent = `Lvl ${level}`;
+  document.getElementById('xp-bar').style.width = (xp % 100) + "%";
+}
+
+function addReward(shards=0, coins=0, xp=0, universal=0, diamonds=0) {
+  userDocRef.update({
+    shards: firebase.firestore.FieldValue. increment(shards),
+    coins: firebase.firestore.FieldValue.increment(coins),
+    xp: firebase.firestore. FieldValue.increment(xp),
+    universal: firebase.firestore.FieldValue.increment(universal),
+    diamonds: firebase. firestore.FieldValue.increment(diamonds)
+  }). then(()=>userDocRef.get()). then(doc=>loadPlayerData(doc. data()));
+}
+
+// ======= Page Navigation ==========
+function hideAll() { 
+  ['hub','quest','dungeon','adventures','training']. forEach(id=>{
+    let e=document.getElementById(id);
+    if(e) e.classList. add('hidden');
+  }); 
+}
+
+function showHub() { 
+  hideAll(); 
+  document.getElementById('hub').classList.remove('hidden'); 
+  if(document.getElementById('sidebar'). classList.contains('-translate-x-full') === false) {
+    toggleSidebar();
+  }
+}
+
+function showQuest() { 
+  hideAll(); 
+  document.getElementById('quest').classList.remove('hidden');
+}
+
+function showDungeon() { 
+  hideAll(); 
+  document.getElementById('dungeon').classList.remove('hidden');
+  document.getElementById('dungeon-msg').textContent="Face a formidable enemy... ";
+}
+
+function showAdventures() { 
+  hideAll(); 
+  document.getElementById('adventures').classList.remove('hidden'); 
+  document.getElementById('adv-msg').textContent="You feel a mysterious wind...  XP incoming? "; 
+}
+
+function showTraining() { 
+  hideAll(); 
+  document.getElementById('training').classList.remove('hidden'); 
+}
+
+function showProfile() { // Show profile modal
+  if(! auth.currentUser) return;
+  db.collection('players').doc(auth.currentUser.uid).get(). then(doc=>{
+    let d=doc.data()||{};
+    document.getElementById('profile-name').textContent = auth.currentUser.displayName||"Player";
+    document.getElementById('profile-email').textContent = auth. currentUser.email;
+    document.getElementById('profile-gender').textContent = d.gender||"Unknown";
+    document.getElementById('profile-referral').textContent = d.referral||"None";
+    document.getElementById('profile-modal').classList.remove('hidden');
+    document.getElementById('edit-email-div').classList.add('hidden');
+  });
+}
+
+function closeProfile() { 
+  document. getElementById('profile-modal').classList. add('hidden'); 
+}
+
+function showEditEmail() { 
+  document.getElementById('edit-email-div').classList.remove('hidden'); 
+}
+
+function editEmail() {
+  let email=document.getElementById('new-email'). value;
+  if(! email) return alert('Enter a valid email');
+  auth.currentUser.updateEmail(email).then(()=>{
+    document.getElementById('profile-email').textContent = email;
+    document.getElementById('new-email').value = '';
+    alert('Email updated! ');
+  }). catch(e=>alert("Error: "+e.message));
+}
+
+function deleteAccount() {
+  if(confirm("Permanently delete account?")) {
+    userDocRef.delete().then(()=>{
+      auth.currentUser.delete(). then(()=>location.reload());
+    }).catch(e=>alert("Error: "+e.message));
+  }
+}
+
+// =========== Quest/Adventure/Training/Dungeon Logic ============
+function claimDaily() { 
+  addReward(1, 0, 20, 0, 0); 
+  alert("Claimed!  +20 XP, +1 Soul Shard"); 
+}
+
+function exploreAdventure() { 
+  let rnd=Math.random();
+  if(rnd<. 33) {
+    addReward(0,10,25);
+    document.getElementById('adv-msg'). textContent="You found 💰10 Coins and 25 XP!";
+  }
+  else if(rnd<.66){
+    addReward(2,0,30);
+    document.getElementById('adv-msg').textContent="You discovered ✦2 Shards and 30 XP!";
+  }
+  else{
+    addReward(0,0,50,3);
+    document.getElementById('adv-msg').textContent="You feel the universe grow... 💵3 Universal +50 XP!";
+  }
+}
+
+function doTraining() { 
+  addReward(0,0,15); 
+  document.getElementById('training-msg').textContent="Great session! +15 XP"; 
+  setTimeout(()=>document.getElementById('training-msg').textContent="+10 XP every 30s online.",2000); 
+}
+
+function doBattle() {
+  let rnd = Math.random();
+  if(rnd < 0.6) {
+    addReward(2, 5, 60);
+    document.getElementById('dungeon-msg').textContent="Victory! You defeated the enemy!  +60 XP, +5 Coins, +2 Shards";
+  } else {
+    addReward(0, 0, 20);
+    document.getElementById('dungeon-msg').textContent="You retreated with +20 XP.  Try again! ";
+  }
+}
+
+</script>
 </body>
-</html>    
+    </html>
