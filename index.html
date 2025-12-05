@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Chill-verse</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .glass {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .glass-input {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .glass-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .error-text {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chill Verse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <style>
+    body { font-family: 'Comfortaa', cursive; background: linear-gradient(135deg, #0f0f23, #1a1a3e); color: #e0e7ff; }
+    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(12px); border: 1px solid rgba(168,85,247,0.3); }
+    .glow { text-shadow: 0 0 20px #a855f7; }
+    .btn:hover { transform: translateY(-4px); box-shadow: 0 15px 40px rgba(168,85,247,0.5); }
+  
+  .error-text {
             color: #ef4444;
             font-size: 0.875rem;
             margin-top: 0.25rem;
@@ -63,250 +55,52 @@
         .reset-password-link:hover {
             color: #1d4ed8;
         }
-    </style>
+  </style>
 </head>
-<body class="bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-md">
-        <!-- Verification Message -->
-        <div class="verification-message" id="verificationMessage">
-            Please verify email before login
-        </div>
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div class="glass p-10 rounded-3xl shadow-2xl max-w-md w-full">
+    <h1 class="text-5xl md:text-6xl font-bold glow text-center mb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">
+      Chill Verse
+    </h1>
 
-        <!-- Login Container -->
-        <div class="glass rounded-lg shadow-2xl p-8 mb-6">
-            <h1 class="text-3xl font-bold text-white mb-2 text-center">Welcome Back</h1>
-            <p class="text-white text-center mb-8 opacity-80">Login to your Chill-verse account</p>
-
-            <form id="loginForm" class="space-y-6">
-                <!-- Email Input -->
-                <div>
-                    <label for="email" class="block text-white font-semibold mb-2">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        class="glass-input w-full px-4 py-3 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition"
-                        required
-                    />
-                    <div class="error-text" id="emailError">Invalid account</div>
-                </div>
-
-                <!-- Password Input -->
-                <div>
-                    <label for="password" class="block text-white font-semibold mb-2">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        class="glass-input w-full px-4 py-3 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition"
-                        required
-                    />
-                    <div class="error-text" id="passwordError">Incorrect password</div>
-                </div>
-
-                <!-- Reset Password Link -->
-                <div class="text-right">
-                    <a href="#" id="resetPasswordLink" class="reset-password-link">Forgot Password?</a>
-                </div>
-
-                <!-- Login Button -->
-                <button
-                    type="submit"
-                    class="w-full bg-white text-purple-600 font-bold py-3 rounded-lg hover:bg-opacity-90 transition duration-300 shadow-lg"
-                >
-                    Login
-                </button>
-            </form>
-          </div>
-        
-        <div class="glass rounded-lg shadow-2xl p-8 mb-6">
-            <p class="text-white text-center">
-                Don't have an account?
-                <a href="register.html" class="font-bold text-white hover:opacity-80 transition">Register here</a>
-            </p>
-        </div>
+<!-- Verification Message -->
+       <div class="verification-message" id="verificationMessage">
+           Please verify email before login
+       </div>
+       
+    <!-- Login -->
+    <div id="login" class="space-y-6">
+    <div>
+      <input type="email" id="email" placeholder="Email" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none" required>
+      <div class="error-text" id="emailError">Invalid account</div>
+      </div>
+      <div>
+      <input type="password" id="pass" placeholder="Password" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none" required>
+      <div class="error-text" id="passwordError">Incorrect Password</div>
+      </div>
+      <button type="submit" class="w-full py-4 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-xl font-bold text-xl glow btn transition">Login</button>
+      
+      <!-- Reset Password Link -->
+      <div class="text-right">
+      <a href="#" id="resetPasswordLink" class="reset-password-link">Forgot Password?</a>
+      </div>
+      
+      <p class="text-left">No account? <span onclick="toggleForm()" class="text-cyan-400 cursor-pointer underline">Register</span></p>
     </div>
-    
-         <!-- Register Container-->
-         <div class="hidden glass rounded-lg shadow-2xl p-8 mb-6">
-         <h1 class="text-3xl font-bold text-white mb-2 text-center">Dive in</h1>
-         <p class="text-white text-center mb-8 opacity-80">Register to your Chill-verse account</p>
-         
-         <form id="loginForm" class="space-y-6">
-         <!-- Email Input -->
-         <div>
-         <label for="email" class="block text-white font-semibold mb-2">Email</label>
-         <input
-         type="email"
-         id="email"
-         name="email"
-         placeholder="Enter your email"
-         class="glass-input w-full px-4 py-3 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition"
-         required
-         />
-         </div>
-         <div>
-         <label for="password" class="block text-white font-semibold mb-2">Password</label>
-         <input
-         type="password"
-         id="password"
-         name="password"
-         placeholder="Enter your password"
-         class="glass-input w-full px-4 py-3 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition"
-         required
-         />
-         </div>
-         <!-- Login Button -->
-         <button
-         type="submit"
-         class="w-full bg-white text-pink-600 font-bold py-3 rounded-lg hover:bg-opacity-90 transition duration-300 shadow-lg"
-         >
-         Register Now
-         </button>
-         </form>
-         </div>
-   
 
-    <script>
-        // Mock registered accounts (In production, this would be server-side validation)
-        const registeredAccounts = {
-            'user@example.com': 'password123',
-            'test@chill-verse.com': 'testpass456',
-            'demo@chill-verse.com': 'demopass789'
-        };
+    <!-- Register -->
+    <div id="register" class="hidden space-y-6">
+      <input type="text" id="username" placeholder="Username (character name)" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
+      <input type="email" id="reg-email" placeholder="Email" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none" required>
+      <input type="password" id="reg-pass" placeholder="Password" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none" required>
+      <button onclick="register()" class="w-full py-4 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl font-bold text-xl glow btn transition">Create Account</button>
+      <p class="text-center"><span onclick="toggleForm()" class="text-cyan-400 cursor-pointer underline">Back to Login</span></p>
+    </div>
 
-        // Track failed attempts and lockout
-        let failedAttempts = 0;
-        const MAX_FAILED_ATTEMPTS = 3;
-        const LOCKOUT_DURATION = 10000; // 10 seconds in milliseconds
-        let isLockedOut = false;
+    <p id="msg" class="text-center mt-6 text-yellow-300 font-bold"></p>
+  </div>
 
-        // Check for pending verification on page load
-        window.addEventListener('load', () => {
-            const pendingVerification = localStorage.getItem('pendingEmailVerification');
-            if (pendingVerification) {
-                const verificationMessage = document.getElementById('verificationMessage');
-                verificationMessage.classList.add('show');
-                localStorage.removeItem('pendingEmailVerification');
-                
-                // Auto-hide after 5 seconds
-                setTimeout(() => {
-                    verificationMessage.classList.remove('show');
-                }, 5000);
-            }
-        });
-
-        // Reset Password Link Handler
-        document.getElementById('resetPasswordLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value.trim();
-            
-            if (!email) {
-                alert('Please enter your email address to reset password');
-                return;
-            }
-            
-            // Simulate sending reset email
-            alert(`Password reset link has been sent to ${email}`);
-            // In production, this would make an API call to send the reset email
-        });
-
-        // Login Form Handler
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            // Check if account is locked out
-            if (isLockedOut) {
-                alert('Too many failed attempts. Please try again after 10 seconds.');
-                return;
-            }
-
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-
-            // Clear previous errors
-            clearErrors();
-
-            // Validate email
-            if (!email) {
-                showEmailError();
-                failedAttempts++;
-                handleFailedAttempt();
-                return;
-            }
-
-            // Check if email is registered
-            if (!(email in registeredAccounts)) {
-                showEmailError();
-                failedAttempts++;
-                handleFailedAttempt();
-                return;
-            }
-
-            // Validate password
-            if (!password) {
-                showPasswordError();
-                failedAttempts++;
-                handleFailedAttempt();
-                return;
-            }
-
-            // Check if password is correct
-            if (registeredAccounts[email] !== password) {
-                showPasswordError();
-                failedAttempts++;
-                handleFailedAttempt();
-                return;
-            }
-
-            // Login successful
-            failedAttempts = 0;
-            localStorage.removeItem('loginFailedAttempts');
-            // Redirect to home page
-            window.location.href = 'home.html';
-        });
-
-        function showEmailError() {
-            const emailInput = document.getElementById('email');
-            const emailError = document.getElementById('emailError');
-            emailInput.classList.add('input-error');
-            emailError.classList.add('show');
-        }
-
-        function showPasswordError() {
-            const passwordInput = document.getElementById('password');
-            const passwordError = document.getElementById('passwordError');
-            passwordInput.classList.add('input-error');
-            passwordError.classList.add('show');
-        }
-
-        function clearErrors() {
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const emailError = document.getElementById('emailError');
-            const passwordError = document.getElementById('passwordError');
-
-            emailInput.classList.remove('input-error');
-            passwordInput.classList.remove('input-error');
-            emailError.classList.remove('show');
-            passwordError.classList.remove('show');
-        }
-
-        function handleFailedAttempt() {
-            if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
-                isLockedOut = true;
-                showLockoutPopup();
-                
-                // Unlock after 10 seconds
-                setTimeout(() => {
-                    isLockedOut = false;
-                    failedAttempts = 0;
-                }, LOCKOUT_DURATION);
-            }
-        }
-
+<script>
 // YOUR REAL CONFIG (already inserted!)
 const firebaseConfig = {
   apiKey: "AIzaSyC9pXU2ZhqUTvQkwgaPOacFeVZcU7grqGQ",
@@ -339,49 +133,172 @@ function register() {
     .catch(err => document.getElementById('msg').textContent = err.message);
 }
 
-function login() {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('pass').value;
-  auth.signInWithEmailAndPassword(email, password)
-    .then(res => {
-      if (res.user.emailVerified) {
-        document.getElementById('msg').innerHTML = `Welcome <strong>${res.user.displayName || email}</strong>!<br>Character creation next...`;
-      } else {
-        document.getElementById('msg').textContent = "Please verify your email first!";
-      }
-    })
-    .catch(err => document.getElementById('msg').textContent = err.message);
-}
+// Mock registered accounts (In production, this would be server-side validation)
+      const registeredAccounts = {
+          'user@example.com': 'password123',
+          'test@chill-verse.com': 'testpass456',
+          'demo@chill-verse.com': 'demopass789'
+      };
 
-        function showLockoutPopup() {
-            const popupHTML = `
-                <div id="lockoutOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div class="glass rounded-lg p-8 max-w-sm mx-4 text-center">
-                        <h2 class="text-2xl font-bold text-white mb-4">Access Limited</h2>
-                        <p class="text-white mb-6">You have entered an incorrect password thrice. Try again after 10 secs.</p>
-                        <button id="lockoutCloseBtn" class="w-full bg-white text-purple-600 font-bold py-2 rounded-lg hover:bg-opacity-90 transition">
-                            OK
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.insertAdjacentHTML('beforeend', popupHTML);
-            
-            const closeBtn = document.getElementById('lockoutCloseBtn');
-            const overlay = document.getElementById('lockoutOverlay');
-            
-            closeBtn.addEventListener('click', () => {
-                overlay.remove();
-            });
-            
-            // Auto-close after 10 seconds
-            setTimeout(() => {
-                if (document.getElementById('lockoutOverlay')) {
-                    overlay.remove();
-                }
-            }, LOCKOUT_DURATION);
-        }
-    </script>
+      // Track failed attempts and lockout
+      let failedAttempts = 0;
+      const MAX_FAILED_ATTEMPTS = 3;
+      const LOCKOUT_DURATION = 10000; // 10 seconds in milliseconds
+      let isLockedOut = false;
+
+      // Check for pending verification on page load
+      window.addEventListener('load', () => {
+          const pendingVerification = localStorage.getItem('pendingEmailVerification');
+          if (pendingVerification) {
+              const verificationMessage = document.getElementById('verificationMessage');
+              verificationMessage.classList.add('show');
+              localStorage.removeItem('pendingEmailVerification');
+              
+              // Auto-hide after 5 seconds
+              setTimeout(() => {
+                  verificationMessage.classList.remove('show');
+              }, 5000);
+          }
+      });
+
+      // Reset Password Link Handler
+      document.getElementById('resetPasswordLink').addEventListener('click', (e) => {
+          e.preventDefault();
+          const email = document.getElementById('email').value.trim();
+          
+          if (!email) {
+              alert('Please enter your email address to reset password');
+              return;
+          }
+          
+          // Simulate sending reset email
+          alert(`Password reset link has been sent to ${email}`);
+          // In production, this would make an API call to send the reset email
+      });
+
+      // Login Form Handler
+      document.getElementById('loginForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          // Check if account is locked out
+          if (isLockedOut) {
+              alert('Too many failed attempts. Please try again after 10 seconds.');
+              return;
+          }
+
+          const email = document.getElementById('email').value.trim();
+          const password = document.getElementById('password').value;
+
+          // Clear previous errors
+          clearErrors();
+
+          // Validate email
+          if (!email) {
+              showEmailError();
+              failedAttempts++;
+              handleFailedAttempt();
+              return;
+          }
+
+          // Check if email is registered
+          if (!(email in registeredAccounts)) {
+              showEmailError();
+              failedAttempts++;
+              handleFailedAttempt();
+              return;
+          }
+
+          // Validate password
+          if (!password) {
+              showPasswordError();
+              failedAttempts++;
+              handleFailedAttempt();
+              return;
+          }
+
+          // Check if password is correct
+          if (registeredAccounts[email] !== password) {
+              showPasswordError();
+              failedAttempts++;
+              handleFailedAttempt();
+              return;
+          }
+
+          // Login successful
+          failedAttempts = 0;
+          localStorage.removeItem('loginFailedAttempts');
+          // Redirect to home page
+          window.location.href = 'home.html';
+      });
+
+      function showEmailError() {
+          const emailInput = document.getElementById('email');
+          const emailError = document.getElementById('emailError');
+          emailInput.classList.add('input-error');
+          emailError.classList.add('show');
+      }
+
+      function showPasswordError() {
+          const passwordInput = document.getElementById('password');
+          const passwordError = document.getElementById('passwordError');
+          passwordInput.classList.add('input-error');
+          passwordError.classList.add('show');
+      }
+
+      function clearErrors() {
+          const emailInput = document.getElementById('email');
+          const passwordInput = document.getElementById('password');
+          const emailError = document.getElementById('emailError');
+          const passwordError = document.getElementById('passwordError');
+
+          emailInput.classList.remove('input-error');
+          passwordInput.classList.remove('input-error');
+          emailError.classList.remove('show');
+          passwordError.classList.remove('show');
+      }
+
+      function handleFailedAttempt() {
+          if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+              isLockedOut = true;
+              showLockoutPopup();
+              
+              // Unlock after 10 seconds
+              setTimeout(() => {
+                  isLockedOut = false;
+                  failedAttempts = 0;
+              }, LOCKOUT_DURATION);
+          }
+      }
+
+      function showLockoutPopup() {
+          const popupHTML = `
+              <div id="lockoutOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div class="glass rounded-lg p-8 max-w-sm mx-4 text-center">
+                      <h2 class="text-2xl font-bold text-white mb-4">Access Limited</h2>
+                      <p class="text-white mb-6">You have entered an incorrect password thrice. Try again after 10 secs.</p>
+                      <button id="lockoutCloseBtn" class="w-full bg-white text-purple-600 font-bold py-2 rounded-lg hover:bg-opacity-90 transition">
+                          OK
+                      </button>
+                  </div>
+              </div>
+          `;
+          
+          document.body.insertAdjacentHTML('beforeend', popupHTML);
+          
+          const closeBtn = document.getElementById('lockoutCloseBtn');
+          const overlay = document.getElementById('lockoutOverlay');
+          
+          closeBtn.addEventListener('click', () => {
+              overlay.remove();
+          });
+          
+          // Auto-close after 10 seconds
+          setTimeout(() => {
+              if (document.getElementById('lockoutOverlay')) {
+                  overlay.remove();
+              }
+          }, LOCKOUT_DURATION);
+      }
+  </script>
 </body>
-             </html>
+</html>
