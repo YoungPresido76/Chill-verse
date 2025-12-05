@@ -73,7 +73,7 @@
             border-radius: 50%;
         }
 
-        .header-title {
+        . header-title {
             font-size: 1.8rem;
             font-weight: 700;
             text-transform: uppercase;
@@ -82,7 +82,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0. 5);
         }
 
         . search-icon {
@@ -143,9 +143,11 @@
             border-bottom: 1px solid rgba(0, 255, 255, 0.1);
         }
 
-        nav ul li a {
-            display: block;
-            padding: 1. 2rem 1. 5rem;
+        nav ul li > a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1. 2rem 1.5rem;
             color: #e0e0ff;
             text-decoration: none;
             transition: all 0.3s ease;
@@ -153,16 +155,17 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             position: relative;
+            cursor: pointer;
         }
 
-        nav ul li a:hover {
+        nav ul li > a:hover {
             color: #00ffff;
             padding-left: 2rem;
             text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
             background: rgba(0, 255, 255, 0.05);
         }
 
-        nav ul li a::before {
+        nav ul li > a::before {
             content: '';
             position: absolute;
             left: 0;
@@ -174,8 +177,53 @@
             transition: transform 0.3s ease;
         }
 
-        nav ul li a:hover::before {
+        nav ul li > a:hover::before {
             transform: scaleY(1);
+        }
+
+        /* Collapsible menu arrow */
+        .collapse-arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        . collapse-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        /* Submenu */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 255, 255, 0.02);
+        }
+
+        .submenu.active {
+            max-height: 500px;
+        }
+
+        .submenu li {
+            border: none;
+        }
+
+        .submenu li a {
+            display: block;
+            padding: 0.8rem 2. 5rem;
+            color: #b0b0ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: capitalize;
+            transition: all 0.3s ease;
+            border-left: 2px solid transparent;
+        }
+
+        .submenu li a:hover {
+            color: #00ffff;
+            border-left-color: #00ffff;
+            padding-left: 3rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
         }
 
         /* Footer in Sidebar */
@@ -338,7 +386,7 @@
             color: #00ffff;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1. 5rem;
         }
 
         .chill-essence p {
@@ -370,7 +418,7 @@
                 font-size: 1.3rem;
             }
 
-            . logo {
+            .logo {
                 width: 40px;
                 height: 40px;
             }
@@ -419,6 +467,15 @@
         <button class="nav-close" id="navClose">✕</button>
         <ul>
             <li><a href="../home.html">Main</a></li>
+            <li>
+                <a class="collapsible-menu" id="elementsToggle">
+                    Elements
+                    <span class="collapse-arrow">▼</span>
+                </a>
+                <ul class="submenu" id="elementsSubmenu">
+                    <li><a href="Elements. html">View All Elements</a></li>
+                </ul>
+            </li>
             <li><a href="arena.html">Arena</a></li>
         </ul>
         <div class="nav-footer">
@@ -446,7 +503,7 @@
             <div class="elements-list">
                 <div class="element-card">
                     <h4>The Mind — ELECTRO</h4>
-                    <p>Pure cognition: memory, reason, invention, and foresight.</p>
+                    <p>Pure cognition: memory, reason, invention, and foresight. </p>
                 </div>
                 <div class="element-card">
                     <h4>The Soul — CRYO</h4>
@@ -467,7 +524,7 @@
             </div>
 
             <p class="intro-text" style="margin-top: 2rem; font-style: italic;">
-                Each is equal in importance, yet distinct in purpose. When all five resonate in perfect harmony, the ultimate state known as the CHILL is achieved.
+                Each is equal in importance, yet distinct in purpose. When all five resonate in perfect harmony, the ultimate state known as the CHILL is achieved. 
             </p>
         </section>
 
@@ -504,9 +561,9 @@
         <!-- The CHILL Section -->
         <section class="chill-essence">
             <h2>THE CHILL</h2>
-            <p>When GEO stands eternal, CRYO converges, ANIMO burns true,<br>ELECTRO illuminates and directs with flawless precision,<br>and PRYO — the Aether — surges as the unifying spark,<br>then all boundaries dissolve. </p>
-            <p style="font-size: 1.3rem; color: #00ffff; margin-top: 1. 5rem;">The five become one. </p>
-            <p>In that perfect resonance, the individual transcends limitation and touches the source of all things.</p>
+            <p>When GEO stands eternal, CRYO converges, ANIMO burns true,<br>ELECTRO illuminates and directs with flawless precision,<br>and PRYO — the Aether — surges as the unifying spark,<br>then all boundaries dissolve.  </p>
+            <p style="font-size: 1.3rem; color: #00ffff; margin-top: 1. 5rem;">The five become one.  </p>
+            <p>In that perfect resonance, the individual transcends limitation and touches the source of all things. </p>
             <p style="font-style: italic; color: #ff00ff; margin-top: 1.5rem;">This supreme, silent harmony is the CHILL.</p>
         </section>
     </main>
@@ -514,9 +571,12 @@
     <script>
         // Menu toggle functionality
         const menuToggle = document.getElementById('menuToggle');
-        const navClose = document. getElementById('navClose');
+        const navClose = document.getElementById('navClose');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
+        const elementsToggle = document.getElementById('elementsToggle');
+        const elementsSubmenu = document.getElementById('elementsSubmenu');
+        const collapseArrow = elementsToggle.querySelector('.collapse-arrow');
 
         // Open menu
         menuToggle.addEventListener('click', (e) => {
@@ -538,19 +598,27 @@
             overlay. classList.remove('active');
         });
 
-        // Close menu when a link is clicked
-        const navLinks = sidebar.querySelectorAll('a');
+        // Collapsible Elements menu
+        elementsToggle.addEventListener('click', (e) => {
+            e. preventDefault();
+            e.stopPropagation();
+            elementsSubmenu.classList.toggle('active');
+            collapseArrow.classList.toggle('open');
+        });
+
+        // Close menu when a link is clicked (except collapsible toggle)
+        const navLinks = sidebar.querySelectorAll('a:not(. collapsible-menu)');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                sidebar.classList. remove('active');
-                overlay. classList.remove('active');
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
             });
         });
 
-        // Prevent sidebar from closing when clicking inside it
+        // Prevent sidebar from closing when clicking
         sidebar.addEventListener('click', (e) => {
             e.stopPropagation();
         });
     </script>
 </body>
-                  </html>
+</html>
