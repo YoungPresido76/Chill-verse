@@ -1,391 +1,556 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chill Verse</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis. com/css2?family=Comfortaa:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat. js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <style>
-    body { font-family: 'Comfortaa', cursive; background: linear-gradient(135deg, #0a0a1a, #1a0033); color: #e0e7ff; }
-    . neumorphism { background: #e0e0e0; backdrop-filter: blur(14px); border: 1px solid rgba(168,85,247,0.25); }
-    .glow { text-shadow: 0 0 20px #a855f7; }
-    .btn-big:hover { transform: translateY(-9px) scale(1.06); box-shadow: 0 12px 30px rgba(168,85,247,. 6);}
-    .element:hover { transform: scale(1. 19) translateY(-12px); filter: drop-shadow(0 0 60px currentColor);}
-    .active-gender { border: 4px solid #06b6d4; }
-    .profile-card { background: rgba(32,32,65,0.98); border-radius: 24px; border: 2px solid #22d3ee; box-shadow: 0 0 40px #0ea5e9cc; padding: 40px 32px;width:330px;}
-    .profile-label { color: #a5b4fc;}
-    .glass-footer {background: rgba(10,8,30,0.97); border-top:2px solid #6366f1; padding-top:16px;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHill VERSE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0d0d1f 100%);
+            color: #e0e0ff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 14, 39, 0.95);
+            border-bottom: 2px solid #00ffff;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0. 3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1. 5rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: #00ffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            transform: scale(1.1);
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            padding: 4px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        . search-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #00ffff;
+            transition: all 0.3s ease;
+        }
+
+        .search-icon:hover {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            transform: scale(1.1);
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: rgba(15, 15, 35, 0.98);
+            border-right: 2px solid #00ffff;
+            padding: 2rem 0;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+        }
+
+        nav. active {
+            transform: translateX(0);
+        }
+
+        .nav-close {
+            background: none;
+            border: none;
+            color: #00ffff;
+            font-size: 2rem;
+            cursor: pointer;
+            margin: 1rem 1. 5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-close:hover {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            transform: scale(1.2);
+        }
+
+        nav ul {
+            list-style: none;
+            margin-bottom: 80px;
+        }
+
+        nav ul li {
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 1. 2rem 1. 5rem;
+            color: #e0e0ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: #00ffff;
+            padding-left: 2rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: #00ffff;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        nav ul li a:hover::before {
+            transform: scaleY(1);
+        }
+
+        /* Footer in Sidebar */
+        . nav-footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            border-top: 2px solid rgba(0, 255, 255, 0.3);
+            padding: 1. 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        . profile-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            font-size: 1.5rem;
+            color: #0a0e27;
+        }
+
+        .profile-icon:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        . welcome {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        .welcome h2 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .welcome p {
+            font-size: 1.2rem;
+            color: #00ffff;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 3rem 0 1.5rem 0;
+            color: #00ffff;
+            border-left: 4px solid #ff00ff;
+            padding-left: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: #e0e0ff;
+            margin: 2rem 0 1rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .intro-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: #c0c0ff;
+        }
+
+        .elements-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .element-card {
+            background: rgba(0, 255, 255, 0.05);
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .element-card:hover {
+            background: rgba(0, 255, 255, 0.1);
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .element-card h4 {
+            color: #ff00ff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .element-card p {
+            color: #c0c0ff;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        . element-description {
+            background: rgba(0, 255, 255, 0.05);
+            border-left: 4px solid #ff00ff;
+            padding: 1. 5rem;
+            margin: 2rem 0;
+            border-radius: 5px;
+        }
+
+        . element-description h3 {
+            color: #ff00ff;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .element-description p {
+            color: #c0c0ff;
+            line-height: 1.8;
+        }
+
+        .chill-essence {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid #00ffff;
+            padding: 2rem;
+            margin: 3rem 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .chill-essence h2 {
+            font-size: 2rem;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+        }
+
+        .chill-essence p {
+            color: #c0c0ff;
+            line-height: 2;
+            font-size: 1rem;
+            margin: 1rem 0;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 1.3rem;
+            }
+
+            . logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            . section-title {
+                font-size: 1.5rem;
+            }
+
+            . welcome h2 {
+                font-size: 1.8rem;
+            }
+
+            .elements-list {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            nav {
+                width: 250px;
+            }
+
+            . nav-footer {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
-<body class="min-h-screen">
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <button class="menu-toggle" id="menuToggle">☰</button>
+            <div class="logo">
+                <img src="icon.png" alt="CHill VERSE Icon">
+            </div>
+            <h1 class="header-title">CHill VERSE</h1>
+        </div>
+        <div class="search-icon">🔍</div>
+    </header>
 
-<!-- ============ TOP BAR ============ -->
-<div class="fixed top-0 left-0 right-0 neumorphism border-b border-purple-500/30 z-50">
-  <div class="flex justify-between items-center p-3">
-    <!-- Sidebar Toggle -->
-    <button onclick="toggleSidebar()" class="text-2xl">☰</button>
-    
-    <!-- Currencies (Icons Only) -->
-    <div class="flex gap-4 items-center text-lg">
-      <div id="shards" title="Soul Shards">✦</div>
-      <div id="coins" title="Coins">🪙</div>
-      <div id="diamonds" title="Diamonds">💎</div>
-      <div id="universal" title="Universal" class="text-green-400">💵</div>
-    </div>
-    
-    <!-- CHILL VERSE (Smaller) -->
-    <h1 class="text-xl font-bold glow">Chill Verse</h1>
-    
-    <!-- User Element -->
-    <img id="user-element" src="" class="w-10 h-10 rounded-full border-3 border-cyan-500" title="Main Element">
-    
-    <!-- Level (Smaller) -->
-    <div class="text-xs">
-      <div id="level" class="text-xs">Lvl 1</div>
-      <div class="w-20 bg-gray-800 rounded-full h-1. 5">
-        <div id="xp-bar" class="bg-gradient-to-r from-purple-600 to-cyan-500 h-1.5 rounded-full transition-all" style="width:0%"></div>
-      </div>
-    </div>
-  </div>
-</div>
+    <!-- Navigation -->
+    <nav id="sidebar">
+        <button class="nav-close" id="navClose">✕</button>
+        <ul>
+            <li><a href="../home.html">Main</a></li>
+            <li><a href="arena.html">Arena</a></li>
+        </ul>
+        <div class="nav-footer">
+            <div class="profile-icon" title="Profile">👤</div>
+        </div>
+    </nav>
 
-<!-- ============ SIDEBAR MENU ============ -->
-<div id="sidebar" class="fixed left-0 top-0 h-full w-1/2 max-w-xs neumorphism -translate-x-full transition-transform z-40 pt-20 flex flex-col">
-  <div class="p-6 space-y-6 text-lg flex-1">
-    <a href="../home.html" onclick="showHub()" class="block glow text-xl font-bold">Main</a>
-  </div>
-  
-  <!-- Profile Footer -->
-  <div class="border-t border-purple-500/50 p-6 flex flex-col gap-4">
-    <div class="flex items-center gap-3 cursor-pointer" onclick="showProfile()">
-      <svg xmlns="http://www.w3. org/2000/svg" class="w-8 h-8 text-cyan-400" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-      </svg>
-      <span class="text-sm">Profile</span>
-    </div>
-    <div class="text-xs space-y-1">
-      <div class="break-all">blcksquare001@gmail.com</div>
-      <div>WhatsApp: +2349130697204</div>
-    </div>
-  </div>
-</div>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
 
-<!-- ============ CHARACTER CREATION SCREEN ============ -->
-<div id="character-screen" class="hidden pt-24 p-8 text-center">
-  <h1 class="text-5xl glow mb-10">Create Your Character</h1>
-  <p class="text-2xl mb-7">Welcome, <span id="user-name" class="text-cyan-400"></span>!</p>
-  <div class="gap-10 flex justify-center items-center mb-5">
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="https://i.ibb.co/4pdQ8bF/male. png" class="w-24 h-24 rounded-full border-4 border-cyan-400 mb-2" id="avatar-male" onclick="chooseGender('male')">
-      <span class="text-cyan-200 text-lg">Male</span>
-    </label>
-    <label class="flex flex-col items-center cursor-pointer">
-      <img src="https://i.ibb.co/NjH70Ck/female.png" class="w-24 h-24 rounded-full border-4 border-pink-400 mb-2" id="avatar-female" onclick="chooseGender('female')">
-      <span class="text-pink-200 text-lg">Female</span>
-    </label>
-  </div>
-  <div class="grid grid-cols-2 md:grid-cols-5 gap-8 justify-center max-w-5xl mx-auto my-6">
-    <img src="https://i.ibb. co/7zC5n8F/geo.png"     alt="Geo"     onclick="select('Geo')"     class="w-32 h-32 element cursor-pointer">
-    <img src="https://i.ibb.co/0jZ6Y4Q/cryo.png"    alt="Cryo"    onclick="select('Cryo')"    class="w-32 h-32 element cursor-pointer">
-    <img src="https://i.ibb.co/9hR6g3K/anemo.png"   alt="Anemo"   onclick="select('Anemo')"   class="w-32 h-32 element cursor-pointer">
-    <img src="https://i.ibb.co/3hW8W5N/electro.png" alt="Electro" onclick="select('Electro')" class="w-32 h-32 element cursor-pointer">
-    <img src="https://i.ibb.co/4pJ8n7Y/pyro.png"    alt="Pyro"    onclick="select('Pyro')"    class="w-32 h-32 element cursor-pointer">
-  </div>
-  <input type="text" id="referral" placeholder="Referral (optional)" class="mt-6 px-4 py-3 rounded-xl focus:border-cyan-400 outline-none bg-white/10 border border-purple-500/50">
-  <p class="text-3xl mt-3">Chosen: <span id="chosen" class="glow text-cyan-400"></span></p>
-  <button id="enter-btn" class="mt-10 px-16 py-6 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-xl text-3xl font-bold glow opacity-50 cursor-not-allowed" disabled>Enter Chill Verse</button>
-</div>
+    <!-- Main Content -->
+    <main>
+        <section class="welcome">
+            <h2>🌀 Welcome to Chill Verse 🌀</h2>
+            <p>Discover the five sacred elements that weave together all existence</p>
+        </section>
 
-<!-- ============ PROFILE CARD ============ -->
-<div id="profile-modal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
-  <div class="profile-card relative">
-    <button onclick="closeProfile()" class="absolute right-3 top-2 text-2xl text-red-400 font-bold">&times;</button>
-    <h3 class="text-3xl glow mb-2">Profile</h3>
-    <p id="profile-name" class="text-2xl my-2">Player</p>
-    <div class="mb-3"><span class="profile-label">Email:</span> <span id="profile-email"></span></div>
-    <div class="mb-3"><span class="profile-label">Gender:</span> <span id="profile-gender"></span></div>
-    <div class="mb-3"><span class="profile-label">Referral:</span> <span id="profile-referral"></span></div>
-    <button onclick="showEditEmail()" class="w-full my-2 px-3 py-1 border border-cyan-400 rounded bg-cyan-900 text-cyan-200">Edit Email</button>
-    <button onclick="deleteAccount()" class="w-full my-2 px-3 py-1 border border-red-400 rounded bg-red-900 text-red-200">Delete Account</button>
-    <div id="edit-email-div" class="hidden my-3">
-      <input type="email" id="new-email" placeholder="New email" class="w-full px-2 py-1 rounded mb-2">
-      <button onclick="editEmail()" class="px-3 py-1 bg-cyan-700 rounded text-white">Save</button>
-    </div>
-  </div>
-</div>
+        <section>
+            <h2 class="section-title">Origins of The Elements</h2>
+            
+            <p class="intro-text">
+                These are the five sacred composites that weave together all existence within the CHILL:
+            </p>
 
-<!-- ============ MAIN HUB PAGE ============ -->
-<div id="hub" class="hidden pt-24 min-h-screen flex flex-col items-center justify-center p-8">
-  <h2 class="text-4xl glow mb-12">Welcome to the Verse</h2>
-  
-  <!-- Vertical Block Buttons -->
-  <div class="flex flex-col gap-6 max-w-sm w-full">
-    <button onclick="showQuest()" class="btn-big neumorphism p-6 rounded-2xl text-2xl font-bold glow bg-gradient-to-br from-blue-600 to-purple-600 w-full py-8">📋 Quest Board</button>
-    <button onclick="showDungeon()" class="btn-big neumorphism p-6 rounded-2xl text-2xl font-bold glow bg-gradient-to-br from-red-600 to-orange-600 w-full py-8">⚔️ Dungeon</button>
-    <button onclick="showAdventures()" class="btn-big neumorphism p-6 rounded-2xl text-2xl font-bold glow bg-gradient-to-br from-green-600 to-teal-600 w-full py-8">🌍 Adventures</button>
-    <button onclick="showTraining()" class="btn-big neumorphism p-6 rounded-2xl text-2xl font-bold glow bg-gradient-to-br from-purple-600 to-pink-600 w-full py-8">💪 Training</button>
-  </div>
-</div>
+            <div class="elements-list">
+                <div class="element-card">
+                    <h4>The Mind — ELECTRO</h4>
+                    <p>Pure cognition: memory, reason, invention, and foresight.</p>
+                </div>
+                <div class="element-card">
+                    <h4>The Soul — CRYO</h4>
+                    <p>The deathless essence that defines "being" and converges all things.</p>
+                </div>
+                <div class="element-card">
+                    <h4>The Heart — ANIMO</h4>
+                    <p>The furnace of desire, courage, love, and compassion.</p>
+                </div>
+                <div class="element-card">
+                    <h4>The Body — GEO</h4>
+                    <p>The oldest element that houses every other element.</p>
+                </div>
+                <div class="element-card">
+                    <h4>The Breath — PRYO</h4>
+                    <p>Raw Aether: the vitality that animates all life.</p>
+                </div>
+            </div>
 
-<!-- ============ QUEST PAGE ============ -->
-<div id="quest" class="hidden pt-28 px-6">
-  <h2 class="text-5xl glow mb-8">Quest Board</h2>
-  <div class="space-y-6 max-w-2xl mx-auto">
-    <div class="neumorphism p-7 rounded-xl">
-      <h3 class="text-3xl">Daily Login (completed online session)</h3>
-      <p>Reward: 20 XP, 1 Soul Shard</p>
-      <button onclick="claimDaily()" class="bg-cyan-600 text-white px-4 py-2 rounded mt-2">Claim</button>
-    </div>
-    <div class="neumorphism p-7 rounded-xl">
-      <h3 class="text-3xl">Defeat 1 Dungeon Enemy</h3>
-      <p>Reward: 60 XP, 5 Coins, 2 Soul Shards</p>
-    </div>
-  </div>
-  <button onclick="showHub()" class="mt-9 neumorphism px-10 py-4 rounded-xl glow">Back to Hub</button>
-</div>
+            <p class="intro-text" style="margin-top: 2rem; font-style: italic;">
+                Each is equal in importance, yet distinct in purpose. When all five resonate in perfect harmony, the ultimate state known as the CHILL is achieved.
+            </p>
+        </section>
 
-<!-- ============ DUNGEON PAGE ============ -->
-<div id="dungeon" class="hidden pt-24 min-h-screen flex flex-col items-center justify-center">
-  <h2 class="text-5xl glow mb-8">Dungeon Battle</h2>
-  <div class="neumorphism p-8 rounded-xl text-center text-2xl max-w-lg shadow-xl">
-    ⚔️ <span id="dungeon-msg">Face a formidable enemy... </span>
-  </div>
-  <button onclick="doBattle()" class="btn-big mt-8 neumorphism px-10 py-5 text-xl rounded-xl bg-gradient-to-br from-red-500 to-orange-500">Attack</button>
-  <button onclick="showHub()" class="mt-3 neumorphism px-9 py-3 rounded-xl glow">Back</button>
-</div>
+        <!-- Detailed Element Descriptions -->
+        <section>
+            <h2 class="section-title">The Sacred Elements</h2>
 
-<!-- ============ ADVENTURES PAGE ============ -->
-<div id="adventures" class="hidden pt-24 min-h-screen flex flex-col items-center justify-center">
-  <h2 class="text-5xl glow mb-8">Adventures</h2>
-  <div class="neumorphism p-8 rounded-xl text-left max-w-lg shadow-xl text-2xl">🌌 <span id="adv-msg">You explore the unknown...</span></div>
-  <button onclick="exploreAdventure()" class="btn-big mt-8 neumorphism px-10 py-5 text-xl rounded-xl bg-gradient-to-br from-green-500 to-teal-500">Explore Again</button>
-  <button onclick="showHub()" class="mt-3 neumorphism px-9 py-3 rounded-xl glow">Back</button>
-</div>
+            <div class="element-description">
+                <h3>GEO ─ The Body</h3>
+                <p>The oldest element that has endured for millions upon millions of years. The cradle and crucible.  It is the primordial vessel that houses every other element, the seed from which all life sprouts.  GEO was the first manifestation of the CHILL, the unshakable axis around which the cosmos turned before time had meaning.</p>
+            </div>
 
-<!-- ============ TRAINING PAGE ============ -->
-<div id="training" class="hidden pt-24 min-h-screen flex flex-col items-center justify-center">
-  <h2 class="text-5xl glow mb-8">Training Grounds</h2>
-  <div class="neumorphism p-8 rounded-xl text-center text-2xl max-w-lg">🏋️ Improve your skills.  <br><span id="training-msg" class="block">+10 XP every 30s online. </span></div>
-  <button onclick="doTraining()" class="btn-big mt-8 neumorphism px-10 py-5 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500">Train Now</button>
-  <button onclick="showHub()" class="mt-3 neumorphism px-9 py-3 rounded-xl glow">Back</button>
-</div>
+            <div class="element-description">
+                <h3>CRYO ─ The Soul</h3>
+                <p>The deathless essence that defines "being." Born from the underlying ichor of the Universe itself, CRYO is the invisible thread that makes GEO more than mere stone. From the instant GEO took form, CRYO began to gather from the farthest voids, turning dead matter into the pivot point of destiny.  Also called "the Convergence," for it pulls all things toward their ultimate purpose.</p>
+            </div>
 
-<!-- ============ SCRIPT ============ -->
-<script>
-const firebaseConfig = { apiKey: "AIzaSyC9pXU2ZhqUTvQkwgaPOacFeVZcU7grqGQ", authDomain: "multiverse--chill.firebaseapp.com", projectId: "multiverse--chill", storageBucket: "multiverse--chill.firebasestorage.app", messagingSenderId: "1098599346366", appId: "1:1098599346366:web:cbf32c2991abcec78eeeef" };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth(), db = firebase.firestore();
+            <div class="element-description">
+                <h3>ANIMO ─ The Heart</h3>
+                <p>The furnace of desire, courage, love, rage, and compassion.  ANIMO is the living fire that refuses to accept stillness. It is the force that drives a being to fight, to create, to protect, and to sacrifice. Without ANIMO, CRYO would remain cold and distant; with it, even the most broken vessel can burn brighter than stars.  Known among the ancients as "the Defiant Spark."</p>
+            </div>
 
-let userDocRef, playerElement="", onlineStart=0, gender="male", referral="";
+            <div class="element-description">
+                <h3>ELECTRO ─ The Mind</h3>
+                <p>Pure cognition: memory, reason, invention, foresight. It grants the ability to see patterns in chaos, to speak across vast distances, to bend reality through understanding. It is the first awareness the CHILL had of the Universe.  More than any other element, ELECTRO determines how efficiently PRYO is wielded; it is the master conductor that turns raw vitality into precise, universe-altering power.</p>
+            </div>
 
-function toggleSidebar() { document.getElementById('sidebar').classList. toggle('-translate-x-full'); }
-function chooseGender(g) {
-  gender = g;
-  document.getElementById('avatar-male').classList.toggle('active-gender', g==='male');
-  document.getElementById('avatar-female').classList.toggle('active-gender', g==='female');
-}
+            <div class="element-description">
+                <h3>PRYO ─ The Breath</h3>
+                <p>The ever-moving wind that carries life through every vein and leaf. PRYO is raw Aether: the first inhalation of a newborn, the final exhalation of the dying, the invisible current that animates flesh and soul alike.  PRYO is the vitality required to accomplish the final ascension of the CHILL. It is the fusing spark that binds all five elements into a single, perfect whole, the sacred rhythm that prevents stagnation and carries existence forward forever.</p>
+            </div>
+        </section>
 
-// TRUE character creation page (choose element + gender + referral)
-auth.onAuthStateChanged(user=>{
-  if(user&&user.emailVerified){
-    userDocRef = db.collection('players').doc(user.uid);
-    userDocRef.get().then(doc=>{
-      if(doc. exists&&doc.data(). element){
-        let data=doc.data(); 
-        playerElement=data. element||""; 
-        gender=data.gender||"male"; 
-        referral=data. referral||"";
-        loadPlayerData(data); 
-        showHub();
-      }else{
-        document.getElementById('character-screen').classList.remove('hidden');
-        document.getElementById('user-name').textContent=user.displayName||user.email. split('@')[0];
-      }
-    });
-    onlineStart=Date.now();
-    setInterval(()=>{ // Passive XP for being online
-      if(document.getElementById('hub')&&! document.getElementById('hub').classList. contains('hidden')) addReward(0,0,Math.floor((Date.now()-onlineStart)/30000)*10);
-    },30000);
-  }else{
-    // Redirect to login page if not authenticated
-    location.href = '../login.html'; // Adjust path as needed
-  }
-});
+        <!-- The CHILL Section -->
+        <section class="chill-essence">
+            <h2>THE CHILL</h2>
+            <p>When GEO stands eternal, CRYO converges, ANIMO burns true,<br>ELECTRO illuminates and directs with flawless precision,<br>and PRYO — the Aether — surges as the unifying spark,<br>then all boundaries dissolve. </p>
+            <p style="font-size: 1.3rem; color: #00ffff; margin-top: 1. 5rem;">The five become one. </p>
+            <p>In that perfect resonance, the individual transcends limitation and touches the source of all things.</p>
+            <p style="font-style: italic; color: #ff00ff; margin-top: 1.5rem;">This supreme, silent harmony is the CHILL.</p>
+        </section>
+    </main>
 
-function select(el) {
-  playerElement=el; 
-  document.getElementById('chosen').textContent=el;
-  document.getElementById('enter-btn').classList.remove('opacity-50','cursor-not-allowed');
-  document.getElementById('enter-btn'). disabled=false;
-  document.getElementById('enter-btn').textContent=`Enter as ${el} Master`;
-  document.getElementById('enter-btn'). onclick=()=>{
-    let ref=document.getElementById('referral').value||"";
-    userDocRef.set({
-      element:el, 
-      xp:0, 
-      level:1, 
-      shards:0, 
-      coins:500, 
-      diamonds:10, 
-      universal:0, 
-      gender, 
-      referral:ref
-    }, {merge:true});
-    loadPlayerData({element:el, xp:0, level:1, shards:0, coins:500, diamonds:10, universal:0, gender, referral:ref});
-    document.getElementById('character-screen').classList.add('hidden'); 
-    showHub();
-  };
-}
+    <script>
+        // Menu toggle functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const navClose = document. getElementById('navClose');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
 
-// ================== Player State and Currency =======================
-function loadPlayerData(data) {
-  let icons = {
-    Geo: "https://i.ibb.co/7zC5n8F/geo.png", 
-    Cryo:"https://i.ibb.co/0jZ6Y4Q/cryo.png", 
-    Anemo:"https://i.ibb.co/9hR6g3K/anemo.png", 
-    Electro:"https://i.ibb.co/3hW8W5N/electro.png", 
-    Pyro:"https://i.ibb.co/4pJ8n7Y/pyro.png"
-  };
-  document.getElementById('user-element').src=icons[data.element||"Geo"];
-  document. getElementById('shards').textContent = `✦ ${data.shards||0}`;
-  document.getElementById('coins').textContent = `🪙 ${data.coins||0}`;
-  document.getElementById('diamonds').textContent = `💎 ${data.diamonds||0}`;
-  document.getElementById('universal').textContent = `💵 ${data.universal||0}`;
-  let level = data.level||1, xp = data.xp||0;
-  document.getElementById('level').textContent = `Lvl ${level}`;
-  document.getElementById('xp-bar').style.width = (xp % 100) + "%";
-}
+        // Open menu
+        menuToggle.addEventListener('click', (e) => {
+            e. stopPropagation();
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+        });
 
-function addReward(shards=0, coins=0, xp=0, universal=0, diamonds=0) {
-  userDocRef.update({
-    shards: firebase.firestore.FieldValue. increment(shards),
-    coins: firebase.firestore.FieldValue.increment(coins),
-    xp: firebase.firestore. FieldValue.increment(xp),
-    universal: firebase.firestore.FieldValue.increment(universal),
-    diamonds: firebase. firestore.FieldValue.increment(diamonds)
-  }). then(()=>userDocRef.get()). then(doc=>loadPlayerData(doc. data()));
-}
+        // Close menu button
+        navClose.addEventListener('click', (e) => {
+            e. stopPropagation();
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
 
-// ======= Page Navigation ==========
-function hideAll() { 
-  ['hub','quest','dungeon','adventures','training']. forEach(id=>{
-    let e=document.getElementById(id);
-    if(e) e.classList. add('hidden');
-  }); 
-}
+        // Close menu on overlay click
+        overlay.addEventListener('click', () => {
+            sidebar.classList. remove('active');
+            overlay. classList.remove('active');
+        });
 
-function showHub() { 
-  hideAll(); 
-  document.getElementById('hub').classList.remove('hidden'); 
-  if(document.getElementById('sidebar'). classList.contains('-translate-x-full') === false) {
-    toggleSidebar();
-  }
-}
+        // Close menu when a link is clicked
+        const navLinks = sidebar.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList. remove('active');
+                overlay. classList.remove('active');
+            });
+        });
 
-function showQuest() { 
-  hideAll(); 
-  document.getElementById('quest').classList.remove('hidden');
-}
-
-function showDungeon() { 
-  hideAll(); 
-  document.getElementById('dungeon').classList.remove('hidden');
-  document.getElementById('dungeon-msg').textContent="Face a formidable enemy... ";
-}
-
-function showAdventures() { 
-  hideAll(); 
-  document.getElementById('adventures').classList.remove('hidden'); 
-  document.getElementById('adv-msg').textContent="You feel a mysterious wind...  XP incoming? "; 
-}
-
-function showTraining() { 
-  hideAll(); 
-  document.getElementById('training').classList.remove('hidden'); 
-}
-
-function showProfile() { // Show profile modal
-  if(! auth.currentUser) return;
-  db.collection('players').doc(auth.currentUser.uid).get(). then(doc=>{
-    let d=doc.data()||{};
-    document.getElementById('profile-name').textContent = auth.currentUser.displayName||"Player";
-    document.getElementById('profile-email').textContent = auth. currentUser.email;
-    document.getElementById('profile-gender').textContent = d.gender||"Unknown";
-    document.getElementById('profile-referral').textContent = d.referral||"None";
-    document.getElementById('profile-modal').classList.remove('hidden');
-    document.getElementById('edit-email-div').classList.add('hidden');
-  });
-}
-
-function closeProfile() { 
-  document. getElementById('profile-modal').classList. add('hidden'); 
-}
-
-function showEditEmail() { 
-  document.getElementById('edit-email-div').classList.remove('hidden'); 
-}
-
-function editEmail() {
-  let email=document.getElementById('new-email'). value;
-  if(! email) return alert('Enter a valid email');
-  auth.currentUser.updateEmail(email).then(()=>{
-    document.getElementById('profile-email').textContent = email;
-    document.getElementById('new-email').value = '';
-    alert('Email updated! ');
-  }). catch(e=>alert("Error: "+e.message));
-}
-
-function deleteAccount() {
-  if(confirm("Permanently delete account?")) {
-    userDocRef.delete().then(()=>{
-      auth.currentUser.delete(). then(()=>location.reload());
-    }).catch(e=>alert("Error: "+e.message));
-  }
-}
-
-// =========== Quest/Adventure/Training/Dungeon Logic ============
-function claimDaily() { 
-  addReward(1, 0, 20, 0, 0); 
-  alert("Claimed!  +20 XP, +1 Soul Shard"); 
-}
-
-function exploreAdventure() { 
-  let rnd=Math.random();
-  if(rnd<. 33) {
-    addReward(0,10,25);
-    document.getElementById('adv-msg'). textContent="You found 💰10 Coins and 25 XP!";
-  }
-  else if(rnd<.66){
-    addReward(2,0,30);
-    document.getElementById('adv-msg').textContent="You discovered ✦2 Shards and 30 XP!";
-  }
-  else{
-    addReward(0,0,50,3);
-    document.getElementById('adv-msg').textContent="You feel the universe grow... 💵3 Universal +50 XP!";
-  }
-}
-
-function doTraining() { 
-  addReward(0,0,15); 
-  document.getElementById('training-msg').textContent="Great session! +15 XP"; 
-  setTimeout(()=>document.getElementById('training-msg').textContent="+10 XP every 30s online.",2000); 
-}
-
-function doBattle() {
-  let rnd = Math.random();
-  if(rnd < 0.6) {
-    addReward(2, 5, 60);
-    document.getElementById('dungeon-msg').textContent="Victory! You defeated the enemy!  +60 XP, +5 Coins, +2 Shards";
-  } else {
-    addReward(0, 0, 20);
-    document.getElementById('dungeon-msg').textContent="You retreated with +20 XP.  Try again! ";
-  }
-}
-
-</script>
+        // Prevent sidebar from closing when clicking inside it
+        sidebar.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
 </body>
-    </html>
+                  </html>
