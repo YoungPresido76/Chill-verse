@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Chill-verse</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group input:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .info-message {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .info-message.show {
+            display: block;
+        }
+
+        .warning-message {
+            color: #856404;
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .warning-message.show {
+            display: block;
+        }
+
+        .lockout-message {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .lockout-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-group {
+            margin-top: 30px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            display: none;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .links a {
+            color: #667eea;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .links a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-content h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .verification-input {
+            display: flex;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .verification-input input {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .verification-input input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .verification-input input:nth-child(2),
+        .verification-input input:nth-child(4) {
+            margin-right: 10px;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .attempt-counter {
+            font-size: 12px;
+            color: #ff9800;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .timer {
+            font-size: 14px;
+            color: #dc3545;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box" id="loginBox">
+            <h1>Welcome Back</h1>
+            <p>Sign in to your Chill-verse account</p>
+
+            <!-- Lockout Warning Message -->
+            <div class="lockout-message" id="lockoutMessage">
+                <strong>Account Locked:</strong> Too many failed login attempts. Please try again after <span id="lockoutTimer">5:00</span> minutes.
+            </div>
+
+            <!-- Warning for remaining attempts -->
+            <div class="warning-message" id="warningMessage">
+                <strong>Warning:</strong> You have <span id="remainingAttempts">3</span> attempts remaining before your account is locked for 5 minutes.
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage"></div>
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage"></div>
+
+            <!-- Info Message -->
+            <div class="info-message" id="infoMessage"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required disabled>
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required disabled>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe" style="display: inline; margin-bottom: 0;">Remember me</label>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" id="loginBtn" disabled>Sign In</button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                </div>
+
+                <div class="attempt-counter" id="attemptCounter"></div>
+                <div class="timer" id="timerDisplay"></div>
+
+                <div class="links">
+                    <a href="#" id="forgotPasswordLink">Forgot password?</a>
+                    <a href="#" id="resendVerificationLink">Verify email</a>
+                </div>
+            </form>
+
+            <div class="signup-link">
+                Don't have an account? <a href="#" id="signupLink">Sign up here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Verification Modal -->
+    <div class="modal" id="verificationModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeVerificationModal">&times;</span>
+            <h2>Verify Your Email</h2>
+            <p style="color: #666; margin-bottom: 20px;">Enter the 6-digit code sent to your email</p>
+            <div class="verification-input" id="verificationInput">
+                <input type="text" maxlength="1" class="verify-code" inputmode="numeric">
+                <input type="text" maxlength="1" class="verify-code" inputmode="numeric">
+                <input type="text" maxlength="1" class="verify-code" inputmode="numeric">
+                <input type="text" maxlength="1" class="verify-code" inputmode="numeric">
+                <input type="text" maxlength="1" class="verify-code" inputmode="numeric">
+                <input type="text" maxlength="1" class="verify-code" inputmode="numeric">
+            </div>
+            <div class="error-message" id="verificationError"></div>
+            <div class="success-message" id="verificationSuccess"></div>
+            <button type="button" class="btn btn-primary" id="verifyBtn" style="margin-top: 20px;">Verify Code</button>
+            <button type="button" class="btn btn-secondary" id="resendCodeBtn" style="display: none; margin-top: 10px;">Resend Code</button>
+            <p style="text-align: center; color: #999; font-size: 12px; margin-top: 15px;">Code expires in <span id="verificationTimer">5:00</span></p>
+        </div>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div class="modal" id="resetModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeResetModal">&times;</span>
+            <h2>Reset Your Password</h2>
+            <div class="error-message" id="resetError"></div>
+            <div class="success-message" id="resetSuccess"></div>
+            
+            <div id="resetStep1">
+                <p style="color: #666; margin-bottom: 20px;">Enter the email address associated with your account</p>
+                <div class="form-group">
+                    <label for="resetEmail">Email Address</label>
+                    <input type="email" id="resetEmail" placeholder="Enter your email" required>
+                </div>
+                <button type="button" class="btn btn-primary" id="sendResetCodeBtn">Send Reset Code</button>
+            </div>
+
+            <div id="resetStep2" style="display: none;">
+                <p style="color: #666; margin-bottom: 20px;">Enter the 6-digit code sent to your email</p>
+                <div class="verification-input" id="resetCodeInput">
+                    <input type="text" maxlength="1" class="reset-code" inputmode="numeric">
+                    <input type="text" maxlength="1" class="reset-code" inputmode="numeric">
+                    <input type="text" maxlength="1" class="reset-code" inputmode="numeric">
+                    <input type="text" maxlength="1" class="reset-code" inputmode="numeric">
+                    <input type="text" maxlength="1" class="reset-code" inputmode="numeric">
+                    <input type="text" maxlength="1" class="reset-code" inputmode="numeric">
+                </div>
+                <button type="button" class="btn btn-primary" id="verifyResetCodeBtn" style="margin-top: 20px;">Verify Code</button>
+            </div>
+
+            <div id="resetStep3" style="display: none;">
+                <p style="color: #666; margin-bottom: 20px;">Create a new password for your account</p>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password" required>
+                    <div class="error-message" id="newPasswordError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+                <button type="button" class="btn btn-primary" id="updatePasswordBtn">Update Password</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Config -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script>
+
+    <script>
+        // Initialize Firebase (Replace with your Firebase config)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        // Constants
+        const MAX_LOGIN_ATTEMPTS = 3;
+        const LOCKOUT_DURATION = 5 * 60 * 1000; // 5 minutes
+        const VERIFICATION_CODE_EXPIRY = 5 * 60 * 1000; // 5 minutes
+        const PASSWORD_MIN_LENGTH = 8;
+
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        const resendVerificationLink = document.getElementById('resendVerificationLink');
+        const signupLink = document.getElementById('signupLink');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const warningMessage = document.getElementById('warningMessage');
+        const lockoutMessage = document.getElementById('lockoutMessage');
+        const infoMessage = document.getElementById('infoMessage');
+        const remainingAttemptsSpan = document.getElementById('remainingAttempts');
+        const attemptCounter = document.getElementById('attemptCounter');
+        const timerDisplay = document.getElementById('timerDisplay');
+
+        // Verification Modal Elements
+        const verificationModal = document.getElementById('verificationModal');
+        const closeVerificationModal = document.getElementById('closeVerificationModal');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const resendCodeBtn = document.getElementById('resendCodeBtn');
+        const verificationError = document.getElementById('verificationError');
+        const verificationSuccess = document.getElementById('verificationSuccess');
+        const verificationTimer = document.getElementById('verificationTimer');
+        const verificationInputs = document.querySelectorAll('.verify-code');
+
+        // Reset Modal Elements
+        const resetModal = document.getElementById('resetModal');
+        const closeResetModal = document.getElementById('closeResetModal');
+        const sendResetCodeBtn = document.getElementById('sendResetCodeBtn');
+        const verifyResetCodeBtn = document.getElementById('verifyResetCodeBtn');
+        const updatePasswordBtn = document.getElementById('updatePasswordBtn');
+        const resetError = document.getElementById('resetError');
+        const resetSuccess = document.getElementById('resetSuccess');
+        const resetEmail = document.getElementById('resetEmail');
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const resetStep1 = document.getElementById('resetStep1');
+        const resetStep2 = document.getElementById('resetStep2');
+        const resetStep3 = document.getElementById('resetStep3');
+        const resetCodeInputs = document.querySelectorAll('.reset-code');
+
+        // State Management
+        let loginAttempts = 0;
+        let isAccountLocked = false;
+        let lockoutEndTime = null;
+        let verificationCodeSent = false;
+        let verificationCodeExpiry = null;
+        let resetCodeSent = false;
+        let verifiedResetEmail = null;
+        let verifiedResetCode = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLoginState();
+            enableFormInputs();
+            addEventListeners();
+        });
+
+        // Load login state from localStorage
+        function loadLoginState() {
+            const savedState = localStorage.getItem('loginState');
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                loginAttempts = state.attempts || 0;
+                lockoutEndTime = state.lockoutEndTime;
+                
+                if (lockoutEndTime && Date.now() < lockoutEndTime) {
+                    isAccountLocked = true;
+                    showAccountLocked();
+                } else if (lockoutEndTime && Date.now() >= lockoutEndTime) {
+                    localStorage.removeItem('loginState');
+                    loginAttempts = 0;
+                    isAccountLocked = false;
+                }
+            }
+
+            const savedEmail = localStorage.getItem('savedEmail');
+            if (savedEmail) {
+                emailInput.value = savedEmail;
+            }
+        }
+
+        // Save login state to localStorage
+        function saveLoginState() {
+            const state = {
+                attempts: loginAttempts,
+                lockoutEndTime: lockoutEndTime
+            };
+            localStorage.setItem('loginState', JSON.stringify(state));
+        }
+
+        // Enable form inputs when not locked
+        function enableFormInputs() {
+            if (!isAccountLocked) {
+                emailInput.disabled = false;
+                passwordInput.disabled = false;
+                loginBtn.disabled = false;
+            }
+        }
+
+        // Add event listeners
+        function addEventListeners() {
+            loginForm.addEventListener('submit', handleLogin);
+            cancelBtn.addEventListener('click', resetLoginForm);
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                openResetModal();
+            });
+            resendVerificationLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                openVerificationModal();
+            });
+            signupLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = 'signup.html';
+            });
+
+            // Verification Modal
+            closeVerificationModal.addEventListener('click', closeVerificationModalFunc);
+            verifyBtn.addEventListener('click', verifyEmailCode);
+            resendCodeBtn.addEventListener('click', resendVerificationCode);
+            verificationInputs.forEach((input, index) => {
+                input.addEventListener('keyup', (e) => moveToNextInput(e, index, 'verify-code'));
+                input.addEventListener('input', (e) => handleVerificationInput(e));
+            });
+
+            // Reset Modal
+            closeResetModal.addEventListener('click', closeResetModalFunc);
+            sendResetCodeBtn.addEventListener('click', sendPasswordResetCode);
+            verifyResetCodeBtn.addEventListener('click', verifyPasswordResetCode);
+            updatePasswordBtn.addEventListener('click', updatePassword);
+            resetCodeInputs.forEach((input, index) => {
+                input.addEventListener('keyup', (e) => moveToNextInput(e, index, 'reset-code'));
+                input.addEventListener('input', (e) => handleResetInput(e));
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === verificationModal) {
+                    closeVerificationModalFunc();
+                }
+                if (e.target === resetModal) {
+                    closeResetModalFunc();
+                }
+            });
+        }
+
+        // Handle login form submission
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            // Check if account is locked
+            if (isAccountLocked) {
+                showAccountLocked();
+                return;
+            }
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Clear previous messages
+            clearMessages();
+
+            // Validate inputs
+            if (!validateEmail(email)) {
+                showError('emailError', 'Please enter a valid email address');
+                return;
+            }
+
+            if (!validatePassword(password)) {
+                showError('passwordError', 'Password is required');
+                return;
+            }
+
+            // Disable form during submission
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<div class="loader"></div>';
+
+            try {
+                // Check email verification status
+                const userDoc = await database.ref('users/' + encodeEmail(email)).once('value');
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.val();
+                    if (!userData.emailVerified) {
+                        showWarning('Please verify your email to continue');
+                        loginBtn.disabled = false;
+                        loginBtn.innerHTML = 'Sign In';
+                        openVerificationModal();
+                        return;
+                    }
+                }
+
+                // Attempt sign in with Firebase
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                
+                // Successful login
+                loginAttempts = 0;
+                isAccountLocked = false;
+                lockoutEndTime = null;
+                localStorage.removeItem('loginState');
+
+                // Save email if "Remember me" is checked
+                if (document.getElementById('rememberMe').checked) {
+                    localStorage.setItem('savedEmail', email);
+                } else {
+                    localStorage.removeItem('savedEmail');
+                }
+
+                // Show success message and redirect
+                showSuccess('Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                loginAttempts++;
+                
+                // Handle specific Firebase errors
+                if (error.code === 'auth/user-not-found') {
+                    showError('emailError', 'No account found with this email');
+                } else if (error.code === 'auth/wrong-password') {
+                    handleFailedLoginAttempt();
+                } else if (error.code === 'auth/invalid-email') {
+                    showError('emailError', 'Invalid email format');
+                } else if (error.code === 'auth/user-disabled') {
+                    showError('errorMessage', 'This account has been disabled');
+                } else {
+                    showError('errorMessage', 'Login failed. Please try again.');
+                }
+
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Sign In';
+                saveLoginState();
+            }
+        }
+
+        // Handle failed login attempt
+        function handleFailedLoginAttempt() {
+            const attemptsRemaining = MAX_LOGIN_ATTEMPTS - loginAttempts;
+
+            if (attemptsRemaining > 0) {
+                showError('passwordError', 'Incorrect password');
+                remainingAttemptsSpan.textContent = attemptsRemaining;
+                
+                if (attemptsRemaining <= 2) {
+                    warningMessage.classList.add('show');
+                    attemptCounter.innerHTML = `<strong>Failed Attempts:</strong> ${loginAttempts}/${MAX_LOGIN_ATTEMPTS}`;
+                }
+            } else {
+                isAccountLocked = true;
+                lockoutEndTime = Date.now() + LOCKOUT_DURATION;
+                saveLoginState();
+                disableFormInputs();
+                showAccountLocked();
+            }
+        }
+
+        // Show account locked message
+        function showAccountLocked() {
+            lockoutMessage.classList.add('show');
+            emailInput.disabled = true;
+            passwordInput.disabled = true;
+            loginBtn.disabled = true;
+            warningMessage.classList.remove('show');
+            attemptCounter.innerHTML = '';
+            
+            startLockoutTimer();
+        }
+
+        // Start lockout timer
+        function startLockoutTimer() {
+            updateLockoutTimer();
+            const timerInterval = setInterval(() => {
+                if (Date.now() >= lockoutEndTime) {
+                    clearInterval(timerInterval);
+                    isAccountLocked = false;
+                    lockoutEndTime = null;
+                    localStorage.removeItem('loginState');
+                    lockoutMessage.classList.remove('show');
+                    enableFormInputs();
+                    loginAttempts = 0;
+                    clearMessages();
+                    resetLoginForm();
+                } else {
+                    updateLockoutTimer();
+                }
+            }, 1000);
+        }
+
+        // Update lockout timer display
+        function updateLockoutTimer() {
+            if (lockoutEndTime) {
+                const remainingTime = lockoutEndTime - Date.now();
+                const minutes = Math.floor(remainingTime / 60000);
+                const seconds = Math.floor((remainingTime % 60000) / 1000);
+                document.getElementById('lockoutTimer').textContent = 
+                    `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
+        }
+
+        // Email Verification Functions
+        function openVerificationModal() {
+            verificationModal.classList.add('show');
+            verificationCodeSent = true;
+            verificationCodeExpiry = Date.now() + VERIFICATION_CODE_EXPIRY;
+            startVerificationTimer();
+            verificationInputs[0].focus();
+            clearVerificationMessages();
+        }
+
+        function closeVerificationModalFunc() {
+            verificationModal.classList.remove('show');
+            clearVerificationInputs();
+            clearVerificationMessages();
+        }
+
+        async function verifyEmailCode() {
+            const code = Array.from(verificationInputs).map(input => input.value).join('');
+
+            if (code.length !== 6) {
+                showVerificationError('Please enter a valid 6-digit code');
+                return;
+            }
+
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<div class="loader"></div>';
+
+            try {
+                // Verify code in Firebase (this is a simplified example)
+                // In production, implement custom token verification
+                const email = emailInput.value;
+                const userRef = database.ref('users/' + encodeEmail(email));
+                
+                const snapshot = await userRef.once('value');
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    if (userData.verificationCode === code) {
+                        // Update user as verified
+                        await userRef.update({ emailVerified: true });
+                        showVerificationSuccess('Email verified successfully!');
+                        setTimeout(() => {
+                            closeVerificationModalFunc();
+                        }, 1500);
+                    } else {
+                        showVerificationError('Invalid verification code');
+                    }
+                } else {
+                    showVerificationError('User not found');
+                }
+            } catch (error) {
+                showVerificationError('Verification failed. Please try again.');
+            }
+
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = 'Verify Code';
+        }
+
+        function resendVerificationCode() {
+            sendVerificationEmail(emailInput.value);
+            verificationCodeExpiry = Date.now() + VERIFICATION_CODE_EXPIRY;
+            resendCodeBtn.style.display = 'none';
+            startVerificationTimer();
+            showVerificationSuccess('New code sent to your email');
+        }
+
+        function startVerificationTimer() {
+            const timerInterval = setInterval(() => {
+                if (Date.now() >= verificationCodeExpiry) {
+                    clearInterval(timerInterval);
+                    resendCodeBtn.style.display = 'block';
+                } else {
+                    const remainingTime = verificationCodeExpiry - Date.now();
+                    const minutes = Math.floor(remainingTime / 60000);
+                    const seconds = Math.floor((remainingTime % 60000) / 1000);
+                    verificationTimer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                }
+            }, 1000);
+        }
+
+        // Password Reset Functions
+        function openResetModal() {
+            resetModal.classList.add('show');
+            resetStep1.style.display = 'block';
+            resetStep2.style.display = 'none';
+            resetStep3.style.display = 'none';
+            resetEmail.value = emailInput.value;
+            resetEmail.focus();
+        }
+
+        function closeResetModalFunc() {
+            resetModal.classList.remove('show');
+            resetStep1.style.display = 'block';
+            resetStep2.style.display = 'none';
+            resetStep3.style.display = 'none';
+            clearResetMessages();
+            clearResetInputs();
+        }
+
+        async function sendPasswordResetCode() {
+            const email = resetEmail.value.trim();
+
+            if (!validateEmail(email)) {
+                showResetError('Please enter a valid email address');
+                return;
+            }
+
+            sendResetCodeBtn.disabled = true;
+            sendResetCodeBtn.innerHTML = '<div class="loader"></div>';
+
+            try {
+                // Send password reset email via Firebase
+                await auth.sendPasswordResetEmail(email);
+                resetCodeSent = true;
+                resetEmail.value = email;
+                resetStep1.style.display = 'none';
+                resetStep2.style.display = 'block';
+                clearResetInputs();
+                showResetSuccess('Reset code sent to your email');
+                resetCodeInputs[0].focus();
+            } catch (error) {
+                if (error.code === 'auth/user-not-found') {
+                    showResetError('No account found with this email');
+                } else {
+                    showResetError('Failed to send reset code. Please try again.');
+                }
+            }
+
+            sendResetCodeBtn.disabled = false;
+            sendResetCodeBtn.innerHTML = 'Send Reset Code';
+        }
+
+        async function verifyPasswordResetCode() {
+            const code = Array.from(resetCodeInputs).map(input => input.value).join('');
+
+            if (code.length !== 6) {
+                showResetError('Please enter a valid 6-digit code');
+                return;
+            }
+
+            verifyResetCodeBtn.disabled = true;
+            verifyResetCodeBtn.innerHTML = '<div class="loader"></div>';
+
+            try {
+                // In production, verify the reset code with your backend
+                verifiedResetCode = code;
+                resetStep2.style.display = 'none';
+                resetStep3.style.display = 'block';
+                newPassword.focus();
+                showResetSuccess('Code verified. Please set a new password.');
+            } catch (error) {
+                showResetError('Invalid reset code. Please try again.');
+            }
+
+            verifyResetCodeBtn.disabled = false;
+            verifyResetCodeBtn.innerHTML = 'Verify Code';
+        }
+
+        async function updatePassword() {
+            const password = newPassword.value;
+            const confirmPass = confirmPassword.value;
+
+            clearResetMessages();
+
+            if (!validatePassword(password)) {
+                showResetError('newPasswordError', `Password must be at least ${PASSWORD_MIN_LENGTH} characters long`);
+                return;
+            }
+
+            if (password !== confirmPass) {
+                showResetError('confirmPasswordError', 'Passwords do not match');
+                return;
+            }
+
+            if (!validatePasswordStrength(password)) {
+                showResetError('newPasswordError', 'Password must contain uppercase, lowercase, numbers, and special characters');
+                return;
+            }
+
+            updatePasswordBtn.disabled = true;
+            updatePasswordBtn.innerHTML = '<div class="loader"></div>';
+
+            try {
+                const email = resetEmail.value;
+                // Create a temporary credential
+                const credential = firebase.auth.EmailAuthProvider.credential(
+                    email,
+                    // You need the old password to authenticate
+                    password
+                );
+
+                // Update password
+                await auth.currentUser.updatePassword(password);
+                
+                showResetSuccess('Password updated successfully!');
+                setTimeout(() => {
+                    closeResetModalFunc();
+                    showSuccess('Password reset successfully. Please login with your new password.');
+                }, 1500);
+            } catch (error) {
+                if (error.code === 'auth/weak-password') {
+                    showResetError('newPasswordError', 'Password is too weak');
+                } else {
+                    showResetError('newPasswordError', 'Failed to update password. Please try again.');
+                }
+            }
+
+            updatePasswordBtn.disabled = false;
+            updatePasswordBtn.innerHTML = 'Update Password';
+        }
+
+        // Utility Functions
+
+        // Encode email for Firebase database keys
+        function encodeEmail(email) {
+            return email.replace(/\./g, '_').replace(/@/g, '_');
+        }
+
+        // Send verification email
+        function sendVerificationEmail(email) {
+            // Generate verification code
+            const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // In production, send this to backend/Firebase Cloud Functions
+            const userRef = database.ref('users/' + encodeEmail(email));
+            userRef.update({
+                verificationCode: verificationCode
+            });
+
+            // Log for demo purposes (remove in production)
+            console.log('Verification code:', verificationCode);
+        }
+
+        // Validate email
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Validate password
+        function validatePassword(password) {
+            return password && password.length > 0;
+        }
+
+        // Validate password strength
+        function validatePasswordStrength(password) {
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            return hasUppercase && hasLowercase && hasNumbers && hasSpecialChar && password.length >= PASSWORD_MIN_LENGTH;
+        }
+
+        // Disable form inputs
+        function disableFormInputs() {
+            emailInput.disabled = true;
+            passwordInput.disabled = true;
+            loginBtn.disabled = true;
+        }
+
+        // Move to next input in verification/reset code inputs
+        function moveToNextInput(e, index, className) {
+            if (e.key === 'Backspace') {
+                if (e.target.value) {
+                    e.target.value = '';
+                } else if (index > 0) {
+                    const inputs = document.querySelectorAll('.' + className);
+                    inputs[index - 1].focus();
+                }
+            } else if (e.key !== 'Enter' && e.target.value && index < 5) {
+                const inputs = document.querySelectorAll('.' + className);
+                inputs[index + 1].focus();
+            }
+        }
+
+        // Handle verification input
+        function handleVerificationInput(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        }
+
+        // Handle reset input
+        function handleResetInput(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        }
+
+        // Clear verification inputs
+        function clearVerificationInputs() {
+            verificationInputs.forEach(input => input.value = '');
+        }
+
+        // Clear reset inputs
+        function clearResetInputs() {
+            resetCodeInputs.forEach(input => input.value = '');
+            newPassword.value = '';
+            confirmPassword.value = '';
+        }
+
+        // Clear messages
+        function clearMessages() {
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+            warningMessage.classList.remove('show');
+            infoMessage.classList.remove('show');
+            document.getElementById('emailError').classList.remove('show');
+            document.getElementById('passwordError').classList.remove('show');
+        }
+
+        function clearVerificationMessages() {
+            verificationError.classList.remove('show');
+            verificationSuccess.classList.remove('show');
+        }
+
+        function clearResetMessages() {
+            resetError.classList.remove('show');
+            resetSuccess.classList.remove('show');
+            document.getElementById('newPasswordError').classList.remove('show');
+            document.getElementById('confirmPasswordError').classList.remove('show');
+        }
+
+        // Show error message
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.classList.add('show');
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.classList.add('show');
+        }
+
+        // Show warning message
+        function showWarning(message) {
+            warningMessage.innerHTML = '<strong>Warning:</strong> ' + message;
+            warningMessage.classList.add('show');
+        }
+
+        // Show info message
+        function showInfo(message) {
+            infoMessage.textContent = message;
+            infoMessage.classList.add('show');
+        }
+
+        // Show verification error
+        function showVerificationError(message) {
+            verificationError.textContent = message;
+            verificationError.classList.add('show');
+        }
+
+        // Show verification success
+        function showVerificationSuccess(message) {
+            verificationSuccess.textContent = message;
+            verificationSuccess.classList.add('show');
+        }
+
+        // Show reset error
+        function showResetError(elementId, message) {
+            if (typeof elementId === 'string' && message) {
+                const element = document.getElementById(elementId);
+                element.textContent = message;
+                element.classList.add('show');
+            } else {
+                // elementId is the message
+                resetError.textContent = elementId;
+                resetError.classList.add('show');
+            }
+        }
+
+        // Show reset success
+        function showResetSuccess(message) {
+            resetSuccess.textContent = message;
+            resetSuccess.classList.add('show');
+        }
+
+        // Reset login form
+        function resetLoginForm() {
+            loginForm.reset();
+            clearMessages();
+            emailInput.value = localStorage.getItem('savedEmail') || '';
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = 'Sign In';
+        }
+
+        // Monitor auth state changes
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // User is logged in
+                console.log('User logged in:', user.email);
+            }
+        });
+    </script>
+</body>
+</html>
