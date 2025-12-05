@@ -22,13 +22,14 @@
     </h1>
 
     <!-- Login -->
+<form onsubmit="event.preventDefault(); window.location.href='home.html';">
     <div id="login" class="space-y-6">
       <input type="email" id="email" placeholder="Email" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
       <input type="password" id="pass" placeholder="Password" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
       <button onclick="login()" class="w-full py-4 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-xl font-bold text-xl glow btn transition">Login</button>
       <p class="text-center">No account? <span onclick="toggleForm()" class="text-cyan-400 cursor-pointer underline">Register</span></p>
     </div>
-
+</form>
     <!-- Register -->
     <div id="register" class="hidden space-y-6">
       <input type="text" id="username" placeholder="Username (character name)" class="w-full px-6 py-4 bg-white/10 rounded-xl border border-purple-500/50 focus:border-cyan-400 outline-none">
