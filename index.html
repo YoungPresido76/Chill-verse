@@ -169,59 +169,43 @@ function register() {
           // In production, this would make an API call to send the reset email
       });
 
-      // Login Handler
-      document.getElementById('loginForm').addEventListener('submit', (e) => {
-          e.preventDefault()
-          // Check if account is locked out
-          if (isLockedOut) {
-              alert('Too many failed attempts. Please try again after 10 seconds.');
-              return;
-          }
+  // Login Forn Handler
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
 
-          const email = document.getElementById('email').value.trim();
-          const password = document.getElementById('pass').value;
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('pass').value;
 
-          // Clear previous errors
-          clearErrors();
+    clearErrors();
 
-        // Validate email
-          if (!email) {
-              showEmailError();
-              failedAttempts++;
-              handleFailedAttempt();
-              return;
-          }
+    if (!email || !password) {
+        alert('Please fill email and password');
+        return;
+    }
 
-          // Check if email is registered
-          if (!(email in registeredAccounts)) {
-              showEmailError();
-              failedAttempts++;
-              handleFailedAttempt();
-              return;
-          }
-        
-          // Validate password
-          if (!password) {
-              showPasswordError();
-              failedAttempts++;
-              handleFailedAttempt();
-              return;
-          }
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            if (!userCredential.user.emailVerified) {
+                auth.signOut();
+                document.getElementById('verificationMessage').classList.add('show');
+                setTimeout(() => document.getElementById('verificationMessage').classList.remove('show'), 7000);
+                alert('Please verify your email first!');
+                return;
+            }
 
-          // Check if password is correct
-          if (registeredAccounts[email] !== password) {
-              showPasswordError();
-              failedAttempts++;
-              handleFailedAttempt();
-              return;
-          }
-
-          // Login successful
-          failedAttempts = 0;
-          localStorage.removeItem('loginFailedAttempts');
-          // Redirect to home page
-          window.location.href = 'home.html';
-      });
+            // REAL SUCCESS
+            window.location.href = "home.html";
+        })
+        .catch((error) => {
+            if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                showEmailError();
+            } else if (error.code === 'auth/wrong-password') {
+                showPasswordError();
+            } else {
+                alert(error.message);
+            }
+        });
+});
 
       function showEmailError() {
           const emailInput = document.getElementById('email');
