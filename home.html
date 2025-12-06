@@ -28,7 +28,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 0 20px rgba(234, 094, 200, 0. 3);
+            box-shadow: 0 0 20px rgba(234, 094, 200, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -37,21 +37,88 @@
         .header-content {
             display: flex;
             align-items: center;
-            gap: 1. 5rem;
+            gap: 1.5rem;
         }
-
-        .menu-toggle {
-            background: none;
-            border: none;
-            color: #00ffff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        
+        /* ──────────────────────────────
+        Collapsible Menu – Full Styling
+        ────────────────────────────── */
+        #collapsibleMenu {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1001;
         }
-
-        .menu-toggle:hover {
-            text-shadow: 0 0 10px rgba(246, 134, 054, 0.8);
-            transform: scale(1.1);
+        
+        /* Hamburger icon */
+        #collapsibleMenu .menu-toggle {
+        font-size: 32px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 8px;
+        display: inline-block;
+        color: inherit;
+        transition: color 0.2s;
+        }
+        #collapsibleMenu .menu-toggle:hover {
+        color: #fff;
+        }
+        
+        /* The dropdown panel */
+       #menuContent {
+       display: none;                     /* still hidden by default */
+       position: absolute;
+       top: 100%;
+       left: 0;
+       min-width: 220px;
+       background: rgba(20, 24, 50, 0.65);   /* dark semi-transparent base */
+       backdrop-filter: blur(12px);          /* the real "frosted glass" effect */
+       -webkit-backdrop-filter: blur(12px);  /* Safari support */
+       border: 1px solid rgba(0, 255, 255, 0.25);
+       border-radius: 12px;
+       box-shadow: 
+       0 8px 32px rgba(0, 0, 0, 0.6),
+       0 0 20px rgba(0, 255, 255, 0.15),
+       inset: 0 0 30px rgba(0, 255, 255, 0.05);
+       overflow: hidden;
+       margin-top: 12px;
+       padding: 8px 0;                     /* nice inner spacing */
+       z-index: 1000;
+       animation: fadeIn 0.3s ease-out;
+       }
+        
+        /* Show menu when it has the "open" class */
+        #menuToggle:checked ~ #menuContent {
+        display: block;
+        }
+        
+        /* Each menu item (your links/buttons) */
+        .menu-button {
+        display: block;
+        width: 100%;
+        padding: 14px 24px;
+        color: #e0e0ff;
+        font-size: 16px;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+        .menu-button:hover {
+        background: rgba(0, 255, 255, 0.15);
+        color: #fff;
+        padding-left: 30px;                 /* subtle indent on hover */
+        }
+        .menu-button:last-child {
+        border-bottom: none;
+        }
+        .menu-button:active {
+        background: rgba(255, 255, 255, 0.25);
+        }
+        
+        /* Tiny fade-in animation (optional but looks pro) */
+        @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to   { opacity: 1; transform: translateY(0); }
         }
 
         .logo {
@@ -82,7 +149,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0. 5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         . search-icon {
@@ -94,168 +161,6 @@
 
         .search-icon:hover {
             text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
-            transform: scale(1.1);
-        }
-
-        /* Sidebar Navigation */
-        nav {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 300px;
-            height: 100vh;
-            background: rgba(15, 15, 35, 0.98);
-            border-right: 2px solid #00ffff;
-            padding: 2rem 0;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            overflow-y: auto;
-            box-shadow: 0 0 30px rgba(255, 255, 0, 0.2);
-        }
-
-        nav. active {
-            transform: translateX(0);
-        }
-
-        .nav-close {
-            background: none;
-            border: none;
-            color: #00ffff;
-            font-size: 2rem;
-            cursor: pointer;
-            margin: 1rem 1. 5rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .nav-close:hover {
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-            transform: scale(1.2);
-        }
-
-        nav ul {
-            list-style: none;
-            margin-bottom: 80px;
-        }
-
-        nav ul li {
-            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-        }
-
-        nav ul li > a {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1. 2rem 1.5rem;
-            color: #e0e0ff;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        nav ul li > a:hover {
-            color: #00ffff;
-            padding-left: 2rem;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
-            background: rgba(153, 195, 210, 0.05);
-        }
-
-        nav ul li > a::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: #00ffff;
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        nav ul li > a:hover::before {
-            transform: scaleY(1);
-        }
-
-        /* Collapsible menu arrow */
-        .collapse-arrow {
-            display: inline-block;
-            transition: transform 0.3s ease;
-            font-size: 0.8rem;
-        }
-
-        . collapse-arrow.open {
-            transform: rotate(180deg);
-        }
-
-        /* Submenu */
-        .submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: rgba(105, 214, 235, 0.02);
-        }
-
-        .submenu.active {
-            max-height: 500px;
-        }
-
-        .submenu li {
-            border:  10px dashed blue;
-        }
-
-        .submenu li a {
-            display: block;
-            padding: 0.8rem 2. 5rem;
-            color: #b0b0ff;
-            text-decoration: none;
-            font-size: 0.9rem;
-            text-transform: capitalize;
-            transition: all 0.3s ease;
-            border-left: 2px solid green;
-        }
-
-        .submenu li a:hover {
-            color: #00ffff;
-            border-left-color: #00ffff;
-            padding-left: 3rem;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
-        }
-
-        /* Footer in Sidebar */
-        . nav-footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            border-top: 2px solid rgba(098, 155, 175, 0.3);
-            padding: 1. 5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        . profile-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00ffff, #ff00ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-            font-size: 1.5rem;
-            color: #0a0e27;
-        }
-
-        .profile-icon:hover {
-            box-shadow: 0 0 25px rgba(176, 035, 211, 0.8);
             transform: scale(1.1);
         }
 
@@ -355,7 +260,7 @@
         . element-description {
             background: rgba(0, 255, 255, 0.05);
             border-left: 4px solid #ff00ff;
-            padding: 1. 5rem;
+            padding: 1.5rem;
             margin: 2rem 0;
             border-radius: 5px;
         }
@@ -386,7 +291,7 @@
             color: #00ffff;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 1. 5rem;
+            margin-bottom: 1.5rem;
         }
 
         .chill-essence p {
@@ -394,22 +299,6 @@
             line-height: 2;
             font-size: 1rem;
             margin: 1rem 0;
-        }
-
-        /* Overlay */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 999;
-        }
-
-        .overlay.active {
-            display: block;
         }
 
         /* Responsive */
@@ -439,13 +328,7 @@
                 padding: 1rem;
             }
 
-            nav {
-                width: 250px;
-            }
-
-            . nav-footer {
-                flex-direction: column;
-            }
+          
         }
     </style>
 </head>
@@ -453,39 +336,30 @@
     <!-- Header -->
     <header>
         <div class="header-content">
-            <button class="menu-toggle" id="menuToggle">☰</button>
+            <div id="collapsibleMenu">
+            
+            <!-- Hidden checkbox + hamburger -->
+            <input type="checkbox" id="menuToggle" hidden>
+            <label for="menuToggle" class="menu-toggle" aria-label="Toggle menu">≡</label>
+             
+             <!-- Main header content (centered) -->
+            <div id="menuContent">
+            <a href="home.html"     class="menu-button">Main</a>
+            <a href="Elements.html" class="menu-button">Elements</a>
+            <a href="Arena.html"     class="menu-button">Arena</a>
+            </div>
+            </div>
+                       
             <div class="logo">
-                <img src="icon.png" alt="CHill VERSE Icon">
+            <img src="icon.png" alt="CHill VERSE Icon">
             </div>
             <h1 class="header-title">CHill VERSE</h1>
-        </div>
-        <div class="search-icon">🔍</div>
-    </header>
-
-    <!-- Navigation -->
-    <nav id="sidebar">
-        <button class="nav-close" id="navClose">✕</button>
-        <ul>
-            <li><a href="../home.html">Main</a></li>
-            <li>
-                <a class="collapsible-menu" id="elementsToggle">
-                    Elements
-                    <span class="collapse-arrow">▼</span>
-                </a>
-                <ul class="submenu" id="elementsSubmenu">
-                    <li><a href="Elements.html">View All Elements</a></li>
-                </ul>
-            </li>
-            <li><a href="arena.html">Arena</a></li>
-        </ul>
-        <div class="nav-footer">
-            <div class="profile-icon" title="Profile">👤</div>
-        </div>
-    </nav>
-
-    <!-- Overlay -->
-    <div class="overlay" id="overlay"></div>
-
+            </div>
+            
+            <!-- Search icon on the right -->
+            <div class="search-icon">Search</div>
+            </header>
+          
     <!-- Main Content -->
     <main>
         <section class="welcome">
@@ -562,63 +436,10 @@
         <section class="chill-essence">
             <h2>THE CHILL</h2>
             <p>When GEO stands eternal, CRYO converges, ANIMO burns true,<br>ELECTRO illuminates and directs with flawless precision,<br>and PRYO — the Aether — surges as the unifying spark,<br>then all boundaries dissolve.  </p>
-            <p style="font-size: 1.3rem; color: #00ffff; margin-top: 1. 5rem;">The five become one.  </p>
+            <p style="font-size: 1.3rem; color: #00ffff; margin-top: 1.5rem;">The five become one.  </p>
             <p>In that perfect resonance, the individual transcends limitation and touches the source of all things. </p>
             <p style="font-style: italic; color: #ff00ff; margin-top: 1.5rem;">This supreme, silent harmony is the CHILL.</p>
         </section>
     </main>
-
-    <script>
-        // Menu toggle functionality
-        const menuToggle = document.getElementById('menuToggle');
-        const navClose = document.getElementById('navClose');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
-        const elementsToggle = document.getElementById('elementsToggle');
-        const elementsSubmenu = document.getElementById('elementsSubmenu');
-        const collapseArrow = elementsToggle.querySelector('.collapse-arrow');
-
-        // Open menu
-        menuToggle.addEventListener('click', (e) => {
-            e. stopPropagation();
-            sidebar.classList.add('active');
-            overlay.classList.add('active');
-        });
-
-        // Close menu button
-        navClose.addEventListener('click', (e) => {
-            e. stopPropagation();
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-
-        // Close menu on overlay click
-        overlay.addEventListener('click', () => {
-            sidebar.classList. remove('active');
-            overlay. classList.remove('active');
-        });
-
-        // Collapsible Elements menu
-        elementsToggle.addEventListener('click', (e) => {
-            e. preventDefault();
-            e.stopPropagation();
-            elementsSubmenu.classList.toggle('active');
-            collapseArrow.classList.toggle('open');
-        });
-
-        // Close menu when a link is clicked (except collapsible toggle)
-        const navLinks = sidebar.querySelectorAll('a:not(. collapsible-menu)');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                sidebar.classList.remove('active');
-                overlay.classList.remove('active');
-            });
-        });
-
-        // Prevent sidebar from closing when clicking
-        sidebar.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-    </script>
-</body>
+    </body>
 </html>
