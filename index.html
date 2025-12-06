@@ -133,13 +133,6 @@ function register() {
     .catch(err => document.getElementById('msg').textContent = err.message);
 }
 
-// Mock registered accounts (In production, this would be server-side validation)
-      const registeredAccounts = {
-          'user@example.com': 'password123',
-          'test@chill-verse.com': 'testpass456',
-          'demo@chill-verse.com': 'demopass789'
-      };
-
       // Track failed attempts and lockout
       let failedAttempts = 0;
       const MAX_FAILED_ATTEMPTS = 3;
@@ -190,23 +183,7 @@ function register() {
 
           // Clear previous errors
           clearErrors();
-
-          // Validate email
-          if (!email) {
-              showEmailError();
-              failedAttempts++;
-              handleFailedAttempt();
-              return;
-          }
-
-          // Check if email is registered
-          if (!(email in registeredAccounts)) {
-              showEmailError();
-              failedAttempts++;
-              handleFailedAttempt();
-              return;
-          }
-
+        
           // Validate password
           if (!password) {
               showPasswordError();
