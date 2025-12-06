@@ -183,6 +183,22 @@ function register() {
 
           // Clear previous errors
           clearErrors();
+
+        // Validate email
+          if (!email) {
+              showEmailError();
+              failedAttempts++;
+              handleFailedAttempt();
+              return;
+          }
+
+          // Check if email is registered
+          if (!(email in registeredAccounts)) {
+              showEmailError();
+              failedAttempts++;
+              handleFailedAttempt();
+              return;
+          }
         
           // Validate password
           if (!password) {
