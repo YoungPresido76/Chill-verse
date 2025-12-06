@@ -20,6 +20,150 @@
             align-items: center;
         }
 
+ /* Header */
+        header {
+            background: rgba(10, 14, 39, 0.95);
+            border-bottom: 2px solid #00ffff;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 0 20px rgba(234, 094, 200, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        /* ──────────────────────────────
+        Collapsible Menu – Full Styling
+        ────────────────────────────── */
+        #collapsibleMenu {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1001;
+        }
+        
+        /* Hamburger icon */
+        #collapsibleMenu .menu-toggle {
+        font-size: 32px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 8px;
+        display: inline-block;
+        color: inherit;
+        transition: color 0.2s;
+        }
+        #collapsibleMenu .menu-toggle:hover {
+        color: #fff;
+        }
+        
+        /* The dropdown panel */
+       #menuContent {
+       display: none;                     /* still hidden by default */
+       position: absolute;
+       top: 100%;
+       left: 0;
+       min-width: 220px;
+       background: rgba(20, 24, 50, 0.65);   /* dark semi-transparent base */
+       backdrop-filter: blur(12px);          /* the real "frosted glass" effect */
+       -webkit-backdrop-filter: blur(12px);  /* Safari support */
+       border: 1px solid rgba(0, 255, 255, 0.25);
+       border-radius: 12px;
+       box-shadow: 
+       0 8px 32px rgba(0, 0, 0, 0.6),
+       0 0 20px rgba(0, 255, 255, 0.15),
+       inset: 0 0 30px rgba(0, 255, 255, 0.05);
+       overflow: hidden;
+       margin-top: 12px;
+       padding: 8px 0;                     /* nice inner spacing */
+       z-index: 1000;
+       animation: fadeIn 0.3s ease-out;
+       }
+        
+        /* Show menu when it has the "open" class */
+        #menuToggle:checked ~ #menuContent {
+        display: block;
+        }
+        
+        /* Each menu item (your links/buttons) */
+        .menu-button {
+        display: block;
+        width: 100%;
+        padding: 14px 24px;
+        color: #e0e0ff;
+        font-size: 16px;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+        .menu-button:hover {
+        background: rgba(0, 255, 255, 0.15);
+        color: #fff;
+        padding-left: 30px;                 /* subtle indent on hover */
+        }
+        .menu-button:last-child {
+        border-bottom: none;
+        }
+        .menu-button:active {
+        background: rgba(255, 255, 255, 0.25);
+        }
+        
+        /* Tiny fade-in animation (optional but looks pro) */
+        @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            padding: 4px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        . header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        . search-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #00ffff;
+            transition: all 0.3s ease;
+        }
+
+        .search-icon:hover {
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+            transform: scale(1.1);
+            }
+        
         .login-container {
             background: white;
             padding: 40px;
@@ -179,6 +323,32 @@
     </style>
 </head>
 <body>
+      <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div id="collapsibleMenu">
+            
+            <!-- Hidden checkbox + hamburger -->
+            <input type="checkbox" id="menuToggle" hidden>
+            <label for="menuToggle" class="menu-toggle" aria-label="Toggle menu">≡</label>
+             
+             <!-- Main header content (centered) -->
+            <div id="menuContent">
+            <a href="home.html"     class="menu-button">Main</a>
+            <a href="Elements.html" class="menu-button">Elements</a>
+            <a href="Arena.html"     class="menu-button">Arena</a>
+            </div>
+            </div>
+                       
+            <div class="logo">
+            <img src="icon.png" alt="CHill VERSE Icon">
+            </div>
+            <h1 class="header-title">CHill VERSE</h1>
+            </div>
+            
+            <!-- Search icon on the right -->
+            <div class="search-icon">Search</div>
+    </header>
     <div class="login-container">
         <h1>Login to Chill-verse</h1>
         
@@ -395,5 +565,90 @@
         emailInput.addEventListener('focus', hideAllMessages);
         passwordInput.addEventListener('focus', hideAllMessages);
     </script>
+    <footer style="margin-top: 6rem; padding: 4rem 2rem 2rem; position: relative; overflow: hidden;">
+    <!-- Subtle background glow -->
+    <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(0,255,255,0.15), transparent 70%); pointer-events: none;"></div>
+    
+    <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+        <!-- Glass panel -->
+        <div style="
+            background: rgba(10, 14, 39, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0,255,255,0.3);
+            border-radius: 16px 16px 0 0;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        ">
+            <h3 style="
+                font-size: 1.8rem;
+                background: linear-gradient(90deg, #00ffff, #ff00ff);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin-bottom: 1.5rem;
+                letter-spacing: 2px;
+            ">CHILL·VERSE</h3>
+
+            <div style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 2rem;
+                margin: 2rem 0;
+                font-size: 1rem;
+                color: #c0c0ff;
+            ">
+                <!-- Copyright -->
+                <div>
+                    <p style="margin-bottom: 0.5rem; color: #00ffff;">© 2025 Chill·Verse</p>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">All realities reserved.</p>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <p style="margin-bottom: 0.8rem;">
+                        <strong style="color: #00ffff;">WhatsApp</strong><br>
+                        <a href="https://wa.me/2349130697204" target="_blank" rel="noopener"
+                           style="color: #c0c0ff; text-decoration: none; transition: all 0.3s;">
+                            +234 913 069 7204 ↗
+                        </a>
+                    </p>
+                    <p>
+                        <strong style="color: #00ffff;">Email</strong><br>
+                        <a href="mailto:blcksquare001@gmail.com"
+                           style="color: #c0c0ff; text-decoration: none; transition: all 0.3s;">
+                            blcksquare001@gmail.com
+                        </a>
+                    </p>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <p style="margin-bottom: 0.8rem;">
+                        <a href="about.html" style="
+                            color: #ff00ff;
+                            text-decoration: none;
+                            font-weight: 600;
+                            font-size: 1.1rem;
+                            transition: all 0.3s;
+                        ">About the Verse →</a>
+                    </p>
+                    <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 1rem;">
+                        “Where the five become one.”
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tiny neon line at the very bottom -->
+            <div style="
+                height: 2px;
+                background: linear-gradient(90deg, transparent, #00ffff, #ff00ff, #00ffff, transparent);
+                margin-top: 2.5rem;
+                border-radius: 2px;
+            "></div>
+        </div>
+    </div>
+    </footer>
 </body>
 </html>
